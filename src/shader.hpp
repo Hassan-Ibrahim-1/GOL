@@ -12,7 +12,16 @@ public:
 
     // build the shader
     Shader(const char* vertex_path, const char* fragment_path);
+    Shader();
+
     ~Shader();
+
+    // to be used when shader was initialized using the default constructor
+    // returns an error otherwise
+    void load(const char* vertex_path, const char* fragment_path);
+
+    // used for hotloading - shader has to be previously loaded for this to work
+    void reload();
 
     // Activate the shader
     void use();
@@ -29,10 +38,15 @@ public:
     const std::string get_error() const;
 
 private:
+    const char* _vertex_path;
+    const char* _fragment_path;
+    bool _shader_loaded = false;
+
     char _error[512];
 
     bool check_shader_compilation_success(int shader);
     bool load_shader_from_path(const char* path, int flag);
+    void load_shaders();
     std::string get_file_contents(const char* path);
 };
 

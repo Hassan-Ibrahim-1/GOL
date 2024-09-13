@@ -10,6 +10,7 @@
 
 #include "error_handler.hpp"
 #include "input_handler.hpp"
+#include "renderer.hpp"
 #include "settings.hpp"
 #include "utils.hpp"
 #include "window.hpp"
@@ -52,7 +53,7 @@ int main() {
     
     // imgui context
     ImGuiIO& io = Utils::create_imgui_context();
-    Globals::io = &io;
+    Globals::g_io = &io;
 
     ImGui::StyleColorsDark();
 
@@ -75,6 +76,8 @@ int main() {
     float last_frame = 0.0f;
 
     glEnable(GL_DEPTH_TEST);
+
+    Renderer renderer;
 
     while (!glfwWindowShouldClose(window.get_window())) {
         float current_frame = glfwGetTime();
@@ -111,8 +114,12 @@ int main() {
         ImGui::SetWindowSize("window", ImVec2(IMGUI_WINDOW_WIDTH, IMGUI_WINDOW_HEIGHT));
         ImGui::End();
 
-        glClearColor(0.8f, 0.1f, 0.1f, 1.0f);
+        // glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+        renderer.draw_point(0, 0, 1);
+        renderer.render();
 
         // render imgui windows
         ImGui::Render();

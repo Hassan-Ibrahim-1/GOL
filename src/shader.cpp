@@ -11,34 +11,15 @@
 
 #include "shader.hpp"
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+Shader::Shader(const char* vertex_path, const char* fragment_path) {
     ID = glCreateProgram();
+    _vertex_path = vertex_path;
+    _fragment_path = fragment_path;
+    load_shaders();
+}
 
-    if (!load_shader_from_path(vertexPath, GL_VERTEX_SHADER)) {
-        std::stringstream ss;
-        ss << "Bad vertex shader load\n" << _error;
-        ErrorHandler::error(ss.str());
-        ID = -1;
-        return;
-    }
-    if (!load_shader_from_path(fragmentPath, GL_FRAGMENT_SHADER)) {
-        std::stringstream ss;
-        ss << "Bad fragment shader load\n" << _error;
-        ErrorHandler::error(ss.str());
-        ID = -1;
-        return;
-    }
-    glLinkProgram(ID);
-    int success = 0;
-    glGetProgramiv(ID, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(ID, 512, NULL, _error);
-        std::stringstream ss;
-        ss << "Bad shader program link\n" << _error;
-        ErrorHandler::error(ss.str());
-        ID = -1;
-        return;
-    }
+Shader::Shader() {
+    ID = glCreateProgram();
 }
 
 Shader::~Shader() {
@@ -69,8 +50,63 @@ bool Shader::load_shader_from_path(const char* path, int flag) {
     return true;
 }
 
+void Shader::load_shaders() {
+    if (!load_shader_from_path(_vertex_path, GL_VERTEX_SHADER)) {
+        std::stringstream ss;
+        ss << "Bad vertex shader load\n" << _error;
+        ErrorHandler::error(ss.str());
+        ID = -1;
+        return;
+    }
+    if (!load_shader_from_path(_fragment_path, GL_FRAGMENT_SHADER)) {
+        std::stringstream ss;
+        ss << "Bad fragment shader load\n" << _error;
+        ErrorHandler::error(ss.str());
+        ID = -1;
+        return;
+    }
+    glLinkProgram(ID);
+    int success = 0;
+    glGetProgramiv(ID, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(ID, 512, NULL, _error);
+        std::stringstream ss;
+        ss << "Bad shader program link\n" << _error;
+        ErrorHandler::error(ss.str());
+        ID = -1;
+        return;
+    }
+    _shader_loaded = true;
+}
+
+void Shader::load(const char* vertex_path, const char* fragment_path) {
+    if (_shader_loaded) {
+        ErrorHandler::error("Shader already loaded");
+        return;
+    }
+    _vertex_path = vertex_path;
+    _fragment_path = fragment_path;
+    load_shaders();
+}
+
+void Shader::reload() {
+    if (!_shader_loaded) {
+        // fix this error message
+        ErrorHandler::error("Shader has to be loaded before it can be reloaded");
+        return;
+    }
+    glDeleteProgram(ID);
+    ID = glCreateProgram();
+    load_shaders();
+}
+
 void Shader::use() {
-    glUseProgram(ID);
+    if (_shader_loaded) {
+        glUseProgram(ID);
+    }
+    else {
+        ErrorHandler::error("Shader not loaded\n");
+    }
 }
 
 const std::string Shader::get_error() const {
@@ -88,7 +124,9 @@ std::string Shader::get_file_contents(const char* path) {
         return ss.str();
     }
     catch (std::ifstream::failure e) {
-        std::cout << "Bad file read: " << e.what() << "\ncode:\n" << e.code() << '\n';
+        std::stringstream ss;
+        ss << "Bad file read: " << e.what() << "\ncode:\n" << e.code() << '\n';
+        ErrorHandler::error(ss.str());
         std::exit(-1);
     }
 

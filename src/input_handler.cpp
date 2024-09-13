@@ -11,7 +11,7 @@ static float last_mouse_y = 0.0f;
 static bool first_mouse = true; // corrects for a large initial jump
 
 void InputHandler::process_input(GLFWwindow* window, float delta_time) {
-    Camera& camera = Globals::camera;
+    Camera& camera = Globals::g_camera;
 
     /*if (Globals::io->WantTextInput) return;*/
 
@@ -75,12 +75,12 @@ void InputHandler::mouse_movement_callback(GLFWwindow* window, double posx, doub
     last_mouse_x = posx;
     last_mouse_y = posy;
 
-    Globals::camera.process_mouse_movement(x_offset, y_offset);
+    Globals::g_camera.process_mouse_movement(x_offset, y_offset);
 }
 
 void InputHandler::mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     if (Settings::cursor_enabled) return;
 
-    Globals::camera.process_mouse_scroll(yoffset);
+    Globals::g_camera.process_mouse_scroll(yoffset);
 }
 
