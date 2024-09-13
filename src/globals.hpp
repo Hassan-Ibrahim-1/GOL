@@ -3,17 +3,12 @@
 #include "imgui.h"
 
 #include "camera.hpp"
-#include "shader.hpp"
-
-struct Shaders {
-    Shaders();
-    Shader point;
-    // Shader rect;
-};
+#include "renderer.hpp"
 
 namespace Globals {
 
-inline Camera g_camera;
-inline ImGuiIO* g_io = nullptr;
+inline Camera camera;
+inline ImGuiIO* io = nullptr;
+inline Renderer renderer;
 }
 

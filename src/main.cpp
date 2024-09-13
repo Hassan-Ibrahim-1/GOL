@@ -53,7 +53,7 @@ int main() {
     
     // imgui context
     ImGuiIO& io = Utils::create_imgui_context();
-    Globals::g_io = &io;
+    Globals::io = &io;
 
     ImGui::StyleColorsDark();
 
@@ -77,7 +77,7 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    Renderer renderer;
+    Renderer& renderer = Globals::renderer;
 
     while (!glfwWindowShouldClose(window.get_window())) {
         float current_frame = glfwGetTime();

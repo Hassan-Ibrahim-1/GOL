@@ -11,7 +11,7 @@ static float last_mouse_y = 0.0f;
 static bool first_mouse = true; // corrects for a large initial jump
 
 void InputHandler::process_input(GLFWwindow* window, float delta_time) {
-    Camera& camera = Globals::g_camera;
+    Camera& camera = Globals::camera;
 
     /*if (Globals::io->WantTextInput) return;*/
 
@@ -53,6 +53,8 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
     if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
         Settings::wireframe_enabled = !Settings::wireframe_enabled;
     }
+    if (key == GLFW_KEY_O && action == GLFW_PRESS) {
+    }
     // enable / disable cursor
     /*if (key == GLFW_KEY_2 && action == GLFW_PRESS) {*/
     /*    Settings::cursor_enabled = !Settings::cursor_enabled;*/
@@ -75,12 +77,12 @@ void InputHandler::mouse_movement_callback(GLFWwindow* window, double posx, doub
     last_mouse_x = posx;
     last_mouse_y = posy;
 
-    Globals::g_camera.process_mouse_movement(x_offset, y_offset);
+    Globals::camera.process_mouse_movement(x_offset, y_offset);
 }
 
 void InputHandler::mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     if (Settings::cursor_enabled) return;
 
-    Globals::g_camera.process_mouse_scroll(yoffset);
+    Globals::camera.process_mouse_scroll(yoffset);
 }
 
