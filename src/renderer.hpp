@@ -38,6 +38,12 @@ private:
     uint _points_vbo;
     uint _rects_vao;
     uint _rects_vbo;
+    uint _rects_ebo;
+
+    std::array<uint, 6> _rect_indices = {
+        0, 1, 3,
+        0, 2, 3 
+    };
 
     void push_point(float x, float y, float z);
     void push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4);
