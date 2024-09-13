@@ -121,7 +121,8 @@ int main() {
         /*glClearColor(1.0f, 1.0f, 1.0f, 1.0f);*/
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-        renderer.draw_point(0, 0, 1);
+        // renderer.draw_point(0, 0, 1);
+        renderer.draw_rect(0.5, 0.5, 0, 0, 0);
         renderer.render();
 
         // render imgui windows

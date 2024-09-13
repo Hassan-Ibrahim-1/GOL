@@ -1,5 +1,8 @@
 things to implement:
-- point rendering
 - rect rendering
 - make the renderer use world space
-- hotloading shaders
+- clean up code
+
+- point rendering -- done
+- hotloading shaders -- done
+

@@ -15,7 +15,7 @@ public:
     void draw_point(glm::vec3& position);
     void draw_point(float x, float y, float z);
 
-    void draw_rect(float width, float height, glm::vec3 position);
+    void draw_rect(float width, float height, glm::vec3& position);
     void draw_rect(float width, float height, float x, float y, float z);
 
     void reload_shaders();
@@ -40,6 +40,9 @@ private:
     uint _rects_vbo;
 
     void push_point(float x, float y, float z);
+    void push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4);
+    void push_rect_point(glm::vec3& point);
+
     void init_vbos();
     void update_vbos();
     void init_vaos();
