@@ -1,0 +1,19 @@
+#include "utils.hpp"
+
+glm::vec3 Utils::imvec4_to_glm_vec3(ImVec4& vec) {
+    return glm::vec3(vec.x, vec.y, vec.z);
+}
+
+ImVec4 Utils::glm_vec3_to_imvec4(glm::vec3& vec) {
+    return ImVec4(vec.x, vec.y, vec.z, 0);
+}
+
+ImGuiIO& Utils::create_imgui_context() {
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void) io; // what
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    return io;
+}
+
