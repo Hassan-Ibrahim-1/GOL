@@ -1,13 +1,18 @@
 #include <glad/glad.h>
-#include <iostream>
 
 #include "renderer.hpp"
-#include "globals.hpp"
 
 Renderer::Renderer() {
     init_vbos();
     init_vaos();
     init_shaders();
+}
+
+Renderer::~Renderer() {
+    glDeleteBuffers(1, &_points_vbo);
+    glDeleteBuffers(1, &_rects_vbo);
+    glDeleteVertexArrays(1, &_points_vao);
+    glDeleteVertexArrays(1, &_rects_vao);
 }
 
 void Renderer::draw_point(glm::vec3& position) {
@@ -16,6 +21,10 @@ void Renderer::draw_point(glm::vec3& position) {
 
 void Renderer::draw_point(float x, float y, float z) {
     push_point(x, y, z);
+}
+
+void Renderer::reload_shaders() {
+    shaders.point.reload();
 }
 
 void Renderer::render() {

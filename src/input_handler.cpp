@@ -54,6 +54,7 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
         Settings::wireframe_enabled = !Settings::wireframe_enabled;
     }
     if (key == GLFW_KEY_O && action == GLFW_PRESS) {
+        Globals::renderer->reload_shaders();
     }
     // enable / disable cursor
     /*if (key == GLFW_KEY_2 && action == GLFW_PRESS) {*/

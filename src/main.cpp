@@ -77,7 +77,10 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    Renderer& renderer = Globals::renderer;
+    // Renderer& renderer = Globals::renderer;
+    // Renderer& renderer = Globals::renderer;
+    Renderer renderer;
+    Globals::renderer = &renderer;
 
     while (!glfwWindowShouldClose(window.get_window())) {
         float current_frame = glfwGetTime();
@@ -114,8 +117,8 @@ int main() {
         ImGui::SetWindowSize("window", ImVec2(IMGUI_WINDOW_WIDTH, IMGUI_WINDOW_HEIGHT));
         ImGui::End();
 
-        // glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        /*glClearColor(1.0f, 1.0f, 1.0f, 1.0f);*/
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
         renderer.draw_point(0, 0, 1);

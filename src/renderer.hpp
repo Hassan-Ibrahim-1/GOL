@@ -10,6 +10,7 @@
 class Renderer {
 public:
     Renderer();
+    ~Renderer();
 
     void draw_point(glm::vec3& position);
     void draw_point(float x, float y, float z);
@@ -17,13 +18,14 @@ public:
     void draw_rect(float width, float height, glm::vec3 position);
     void draw_rect(float width, float height, float x, float y, float z);
 
+    void reload_shaders();
+
     // Actually render all draw calls
     void render();
 
 private:
     std::vector<float> _points;
     std::vector<float> _rects;
-
 
     struct Shaders {
         Shaders() = default;

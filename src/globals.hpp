@@ -9,6 +9,7 @@ namespace Globals {
 
 inline Camera camera;
 inline ImGuiIO* io = nullptr;
-inline Renderer renderer;
+inline Renderer* renderer;
+
 }
 
