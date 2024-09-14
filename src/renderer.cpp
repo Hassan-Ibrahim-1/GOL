@@ -1,11 +1,6 @@
 #include <glad/glad.h>
-#include <iostream>
 
 #include "renderer.hpp"
-
-/*
-* vertex, color, vertex, color, vertex, color, vertex, color
-*/
 
 Renderer::Renderer() {
     init_vbos();
@@ -33,8 +28,9 @@ void Renderer::reload_shaders() {
     shaders.point.reload();
 }
 
-void Renderer::draw_rect(Rect& rect) {
+void Renderer::draw_rect(Rect& rect, DrawMode draw_mode) {
     draw_rect(rect.width, rect.height, rect.position, rect.color);
+    _rect_draw_modes.push_back(draw_mode);
 }
 
 void Renderer::draw_rect(float width, float height, glm::vec3 position, glm::vec4 color) {
@@ -54,7 +50,16 @@ void Renderer::render() {
 
     glBindVertexArray(_rects_vao);
     // TODO: check for fill or line mode
-    glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+    for (auto draw_mode : _rect_draw_modes) {
+        if (draw_mode == DrawMode::RECT_FILL) {
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+        else if (draw_mode == DrawMode::RECT_LINE){
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
+            glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+        }
+    }
     // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     _points.clear();
@@ -132,7 +137,7 @@ void Renderer::init_vaos() {
     // TODO: why is this here
     glGenBuffers(1, &_rects_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rects_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
     /*glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);*/
 
     glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 7, (void*)0);

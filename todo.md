@@ -1,9 +1,8 @@
 things to implement:
-- clean up code
-- Only send rect color once to vbo unless changing each vertex color
 - rect fill and line mode
 - proper rect centering
 - make the renderer use world space
+- Make rect struct 4 vertices and have color data for each of them
 
 
 - Rect struct -- done

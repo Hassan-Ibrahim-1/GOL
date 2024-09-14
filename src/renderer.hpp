@@ -8,6 +8,11 @@
 #include "point.hpp"
 #include "shader.hpp"
 
+enum class DrawMode {
+    RECT_FILL,
+    RECT_LINE,
+};
+
 class Renderer {
 public:
     Renderer();
@@ -16,7 +21,7 @@ public:
     void draw_point(Point& point);
     void draw_point(glm::vec3 position, glm::vec4 color);
 
-    void draw_rect(Rect& rect);
+    void draw_rect(Rect& rect, DrawMode draw_mode = DrawMode::RECT_FILL);
     void draw_rect(float width, float height, glm::vec3 position, glm::vec4 color);
 
     void reload_shaders();
@@ -27,6 +32,7 @@ public:
 private:
     std::vector<float> _points;
     std::vector<float> _rects;
+    std::vector<DrawMode> _rect_draw_modes;
 
     struct Shaders {
         Shaders() = default;
@@ -40,14 +46,14 @@ private:
     uint _rects_vbo;
     uint _rects_ebo;
 
-    std::array<uint, 8> _rect_outline_indices = {
+    static constexpr std::array<uint, 8> _rect_outline_indices = {
         0, 1,
         1, 3,
         0, 2,
         2, 3,
     };
 
-    std::array<uint, 6> _rect_fill_indices = {
+    static constexpr std::array<uint, 6> _rect_fill_indices = {
         0, 1, 3,
         0, 2, 3 
     };
