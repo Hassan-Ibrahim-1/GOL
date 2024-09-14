@@ -9,8 +9,8 @@
 #include "shader.hpp"
 
 enum class DrawMode {
-    RECT_FILL,
-    RECT_LINE,
+    FILL,
+    LINE,
 };
 
 class Renderer {
@@ -21,7 +21,7 @@ public:
     void draw_point(Point& point);
     void draw_point(glm::vec3 position, glm::vec4 color);
 
-    void draw_rect(Rect& rect, DrawMode draw_mode = DrawMode::RECT_FILL);
+    void draw_rect(Rect& rect, DrawMode draw_mode = DrawMode::FILL);
     void draw_rect(float width, float height, glm::vec3 position, glm::vec4 color);
 
     void reload_shaders();

@@ -131,7 +131,7 @@ int main() {
         glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
         /*Point point(position, color);*/
         Rect rect(position, 0.4f, 0.4f, color);
-        renderer.draw_rect(rect, DrawMode::RECT_LINE);
+        renderer.draw_rect(rect, DrawMode::LINE);
         /*rect.position.y = 0.1f;*/
         /*rect.width = 0.2f;*/
         /*renderer.draw_rect(rect);*/

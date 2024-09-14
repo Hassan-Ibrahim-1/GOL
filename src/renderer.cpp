@@ -51,11 +51,11 @@ void Renderer::render() {
     glBindVertexArray(_rects_vao);
     // TODO: check for fill or line mode
     for (auto draw_mode : _rect_draw_modes) {
-        if (draw_mode == DrawMode::RECT_FILL) {
+        if (draw_mode == DrawMode::FILL) {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
-        else if (draw_mode == DrawMode::RECT_LINE){
+        else if (draw_mode == DrawMode::LINE){
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
             glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
         }
