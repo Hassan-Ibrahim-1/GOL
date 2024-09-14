@@ -7,8 +7,6 @@
 * vertex, color, vertex, color, vertex, color, vertex, color
 */
 
-static glm::vec4 color;
-
 Renderer::Renderer() {
     init_vbos();
     init_vaos();
@@ -23,17 +21,12 @@ Renderer::~Renderer() {
 }
 
 void Renderer::draw_point(Point& point) {
-    // TODO: clean this up make draw point
-    draw_point(point.position);
-    push_point_color(point.color);
+    draw_point(point.position, point.color);
 }
 
-void Renderer::draw_point(glm::vec3& position) {
-    draw_point(position.x, position.y, position.z);
-}
-
-void Renderer::draw_point(float x, float y, float z) {
-    push_point(x, y, z);
+void Renderer::draw_point(glm::vec3 position, glm::vec4 color) {
+    push_point(position.x, position.y, position.z);
+    push_point_color(color);
 }
 
 void Renderer::reload_shaders() {
@@ -41,20 +34,15 @@ void Renderer::reload_shaders() {
 }
 
 void Renderer::draw_rect(Rect& rect) {
-    color = rect.color;
-    draw_rect(rect.width, rect.height, rect.position.x, rect.position.y, rect.position.z);
+    draw_rect(rect.width, rect.height, rect.position, rect.color);
 }
 
-void Renderer::draw_rect(float width, float height, glm::vec3& position) {
-    draw_rect(width, height, position.x, position.y, position.z);
-}
-
-void Renderer::draw_rect(float width, float height, float x, float y, float z) {
-    glm::vec3 v1(x, y, z);
-    glm::vec3 v2(x + width, y, z);
-    glm::vec3 v3(x, y - height, z);
-    glm::vec3 v4(x + width, y - height, z);
-    push_rect(v1, v2, v3, v4);
+void Renderer::draw_rect(float width, float height, glm::vec3 position, glm::vec4 color) {
+    glm::vec3 v1(position.x, position.y, position.z);
+    glm::vec3 v2(position.x + width, position.y, position.z);
+    glm::vec3 v3(position.x, position.y - height, position.z);
+    glm::vec3 v4(position.x + width, position.y - height, position.z);
+    push_rect(v1, v2, v3, v4, color);
 }
 
 void Renderer::render() {
@@ -86,13 +74,7 @@ void Renderer::push_point_color(glm::vec4& color) {
     _points.push_back(color.a);
 }
 
-void Renderer::push_rect_point(glm::vec3& point) {
-    _rects.push_back(point.x);
-    _rects.push_back(point.y);
-    _rects.push_back(point.z);
-}
-
-void Renderer::push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4) {
+void Renderer::push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4, glm::vec4& color) {
     push_rect_point(v1);
     push_rect_color(color);
     push_rect_point(v2);
@@ -101,6 +83,12 @@ void Renderer::push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3&
     push_rect_color(color);
     push_rect_point(v4);
     push_rect_color(color);
+}
+
+void Renderer::push_rect_point(glm::vec3& point) {
+    _rects.push_back(point.x);
+    _rects.push_back(point.y);
+    _rects.push_back(point.z);
 }
 
 void Renderer::push_rect_color(glm::vec4& color) {
