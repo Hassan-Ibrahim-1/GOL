@@ -1,5 +1,6 @@
 things to implement:
 - Rect struct
+- Only send rect color once to vbo unless changing each vertex color
 - proper rect centering
 - make the renderer use world space
 - clean up code

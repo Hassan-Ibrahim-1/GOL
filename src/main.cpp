@@ -118,7 +118,7 @@ int main() {
 
         ImGui::Begin("config");
         ImGui::SetWindowSize("window", ImVec2(IMGUI_WINDOW_WIDTH, IMGUI_WINDOW_HEIGHT));
-        ImGui::ColorEdit3("point color", (float*)&point_color);
+        ImGui::ColorEdit4("point color", (float*)&point_color);
         ImGui::End();
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -130,7 +130,7 @@ int main() {
         glm::vec3 position(0);
         glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
         /*Point point(position, color);*/
-        Rect rect(position, 0.2f, 0.2f, color);
+        Rect rect(position, 0.4f, 0.4f, color);
         renderer.draw_rect(rect);
 
         renderer.render();

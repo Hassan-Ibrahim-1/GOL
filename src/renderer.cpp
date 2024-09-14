@@ -3,6 +3,11 @@
 
 #include "renderer.hpp"
 
+/*
+* vertex, color, vertex, color, vertex, color, vertex, color
+*/
+
+static glm::vec4 color;
 
 Renderer::Renderer() {
     init_vbos();
@@ -36,8 +41,8 @@ void Renderer::reload_shaders() {
 }
 
 void Renderer::draw_rect(Rect& rect) {
+    color = rect.color;
     draw_rect(rect.width, rect.height, rect.position.x, rect.position.y, rect.position.z);
-    push_rect_color(rect.color);
 }
 
 void Renderer::draw_rect(float width, float height, glm::vec3& position) {
@@ -62,6 +67,7 @@ void Renderer::render() {
     glBindVertexArray(_rects_vao);
     // TODO: check for fill or line mode
     glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     _points.clear();
     _rects.clear();
@@ -88,9 +94,13 @@ void Renderer::push_rect_point(glm::vec3& point) {
 
 void Renderer::push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4) {
     push_rect_point(v1);
+    push_rect_color(color);
     push_rect_point(v2);
+    push_rect_color(color);
     push_rect_point(v3);
+    push_rect_color(color);
     push_rect_point(v4);
+    push_rect_color(color);
 }
 
 void Renderer::push_rect_color(glm::vec4& color) {
@@ -135,6 +145,7 @@ void Renderer::init_vaos() {
     glGenBuffers(1, &_rects_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rects_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
+    /*glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);*/
 
     glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 7, (void*)0);
     glEnableVertexAttribArray(0);
