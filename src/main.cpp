@@ -42,8 +42,8 @@ int main() {
     }
 
     glfwSetKeyCallback(window.get_window(), InputHandler::key_callback);
-    glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);
-    glfwSetScrollCallback(window.get_window(), InputHandler::mouse_scroll_callback);
+    /*glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);*/
+    /*glfwSetScrollCallback(window.get_window(), InputHandler::mouse_scroll_callback);*/
 
     // Enable vsync
     glfwSwapInterval(1);
@@ -77,8 +77,6 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    // Renderer& renderer = Globals::renderer;
-    // Renderer& renderer = Globals::renderer;
     Renderer renderer;
     Globals::renderer = &renderer;
 
@@ -113,13 +111,6 @@ int main() {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
-        /*if (Settings::cursor_enabled) {*/
-        /*    glfwSetInputMode(window.get_window(), GLFW_CURSOR, GLFW_CURSOR_NORMAL); */
-        /*}*/
-        /*else {*/
-        /*    glfwSetInputMode(window.get_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);*/
-        /*}*/
-
         // start imgui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -136,7 +127,6 @@ int main() {
         ImGui::End();
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        /*glClearColor(1.0f, 1.0f, 1.0f, 1.0f);*/
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
         glm::mat4 view = camera.get_view_matrix();

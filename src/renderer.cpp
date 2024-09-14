@@ -64,12 +64,13 @@ void Renderer::render() {
 
         if (draw_mode == DrawMode::FILL) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         else if (draw_mode == DrawMode::LINE) {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glDrawArrays(GL_LINE_LOOP, 0, 4);
         }
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // wglBindBuffer(GL_ARRAY_BUFFER, )
 
         /*if (draw_mode == DrawMode::FILL) {*/
         /*    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);*/
