@@ -40,7 +40,14 @@ private:
     uint _rects_vbo;
     uint _rects_ebo;
 
-    std::array<uint, 6> _rect_indices = {
+    std::array<uint, 8> _rect_outline_indices = {
+        0, 1,
+        1, 3,
+        0, 2,
+        2, 3,
+    };
+
+    std::array<uint, 6> _rect_fill_indices = {
         0, 1, 3,
         0, 2, 3 
     };

@@ -49,7 +49,7 @@ void Renderer::render() {
 
     // shaders.point.use();
     glBindVertexArray(_rects_vao);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
     _points.clear();
     _rects.clear();
 }
@@ -104,7 +104,7 @@ void Renderer::init_vaos() {
 
     glGenBuffers(1, &_rects_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rects_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_indices.size() * sizeof(float), _rect_indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 3, (void*)0);
     glEnableVertexAttribArray(0);
