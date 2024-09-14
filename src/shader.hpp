@@ -1,8 +1,11 @@
 #pragma once
 
-#include "imgui.h"
 #include <string>
+
 #include <glm/glm.hpp>
+#include "imgui.h"
+
+#include "vertex.hpp"
 
 // Shader program
 class Shader {
@@ -33,7 +36,10 @@ public:
     void set_vec3(const std::string& name, glm::vec3& value) const;
     void set_vec3(const std::string& name, float x, float y, float z) const;
     void set_vec3(const std::string& name, ImVec4& value) const;
+    void set_vec4(const std::string& name, glm::vec4& value);
     void set_mat4(const std::string& name, glm::mat4& value) const;
+
+    void set_vertex(const std::string& position_name, const std::string& color_name, Vertex& vertex);
 
     const std::string get_error() const;
 

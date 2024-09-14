@@ -1,14 +1,15 @@
 #pragma once
 
+#include <array>
+
 #include <glm/glm.hpp>
 
+#include "vertex.hpp"
+
 struct Rect {
-    glm::vec3 position = glm::vec3(0);
-    float width = 1.0f;
-    float height = 1.0f;
+    std::array<Vertex, 4> vertices;
 
-    glm::vec4 color = glm::vec4(0);
-
+    Rect(Vertex v1, Vertex v2, Vertex v3, Vertex v4);
     Rect(glm::vec3 position, float width, float height, glm::vec4 color);
     Rect(
         float x,

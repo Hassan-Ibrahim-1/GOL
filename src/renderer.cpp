@@ -29,8 +29,9 @@ void Renderer::reload_shaders() {
 }
 
 void Renderer::draw_rect(Rect& rect, DrawMode draw_mode) {
-    draw_rect(rect.width, rect.height, rect.position, rect.color);
+    _rects.push_back(rect);
     _rect_draw_modes.push_back(draw_mode);
+    /*draw_rect(rect.width, rect.height, rect.position, rect.color);*/
 }
 
 void Renderer::draw_rect(float width, float height, glm::vec3 position, glm::vec4 color) {
@@ -38,7 +39,7 @@ void Renderer::draw_rect(float width, float height, glm::vec3 position, glm::vec
     glm::vec3 v2(position.x + width, position.y, position.z);
     glm::vec3 v3(position.x, position.y - height, position.z);
     glm::vec3 v4(position.x + width, position.y - height, position.z);
-    push_rect(v1, v2, v3, v4, color);
+    /*push_rect(v1, v2, v3, v4, color);*/
 }
 
 void Renderer::render() {
@@ -49,8 +50,10 @@ void Renderer::render() {
     glDrawArrays(GL_POINTS, 0, _points.size());
 
     glBindVertexArray(_rects_vao);
-    // TODO: check for fill or line mode
-    for (auto draw_mode : _rect_draw_modes) {
+    for (size_t i = 0; i < _rects.size(); i++) {
+        Rect& rect = _rects[i];
+        DrawMode draw_mode = _rect_draw_modes[i];
+
         if (draw_mode == DrawMode::FILL) {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -63,6 +66,7 @@ void Renderer::render() {
     // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     _points.clear();
+    _rect_draw_modes.clear();
     _rects.clear();
 }
 
@@ -79,29 +83,16 @@ void Renderer::push_point_color(glm::vec4& color) {
     _points.push_back(color.a);
 }
 
-void Renderer::push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4, glm::vec4& color) {
-    push_rect_point(v1);
-    push_rect_color(color);
-    push_rect_point(v2);
-    push_rect_color(color);
-    push_rect_point(v3);
-    push_rect_color(color);
-    push_rect_point(v4);
-    push_rect_color(color);
-}
-
-void Renderer::push_rect_point(glm::vec3& point) {
-    _rects.push_back(point.x);
-    _rects.push_back(point.y);
-    _rects.push_back(point.z);
-}
-
-void Renderer::push_rect_color(glm::vec4& color) {
-    _rects.push_back(color.r);
-    _rects.push_back(color.g);
-    _rects.push_back(color.b);
-    _rects.push_back(color.a);
-}
+/*void Renderer::push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4, glm::vec4& color) {*/
+/*    push_rect_point(v1);*/
+/*    push_rect_color(color);*/
+/*    push_rect_point(v2);*/
+/*    push_rect_color(color);*/
+/*    push_rect_point(v3);*/
+/*    push_rect_color(color);*/
+/*    push_rect_point(v4);*/
+/*    push_rect_color(color);*/
+/*}*/
 
 void Renderer::init_vbos() {
     glGenBuffers(1, &_points_vbo);
@@ -110,10 +101,10 @@ void Renderer::init_vbos() {
 
 void Renderer::update_vbos() {
     // not sure if this is needed
-    glBindVertexArray(_points_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, _points_vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * _points.size(), _points.data(), GL_STATIC_DRAW);
-
+    /*glBindVertexArray(_points_vao);*/
+    /*glBindBuffer(GL_ARRAY_BUFFER, _points_vbo);*/
+    /*glBufferData(GL_ARRAY_BUFFER, sizeof(float) * _points.size(), _points.data(), GL_STATIC_DRAW);*/
+    /**/
     glBindVertexArray(_rects_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _rects_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * _rects.size(), _rects.data(), GL_STATIC_DRAW);
@@ -133,21 +124,21 @@ void Renderer::init_vaos() {
     glGenVertexArrays(1, &_rects_vao);
     glBindVertexArray(_rects_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _rects_vbo);
-
-    // TODO: why is this here
+    /**/
     glGenBuffers(1, &_rects_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rects_ebo);
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
     /*glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);*/
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 7, (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 7, (void*)(sizeof(float) * 3));
-    glEnableVertexAttribArray(1);
+    /*glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 7, (void*)0);*/
+    /*glEnableVertexAttribArray(0);*/
+    /**/
+    /*glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 7, (void*)(sizeof(float) * 3));*/
+    /*glEnableVertexAttribArray(1);*/
 }
 
 void Renderer::init_shaders() {
     shaders.point.load("shaders/point_shader.vert", "shaders/point_shader.frag");
 }
+
 

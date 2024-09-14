@@ -158,8 +158,17 @@ void Shader::set_vec3(const std::string& name, ImVec4& value) const {
     glUniform3f(glGetUniformLocation(ID, name.c_str()), value.x, value.y, value.z);
 }
 
+void Shader::set_vec4(const std::string& name, glm::vec4& value) {
+    glUniform4f(glGetUniformLocation(ID, name.c_str()), value.x, value.y, value.z, value.w);
+}
+
 void Shader::set_mat4(const std::string& name, glm::mat4& value) const {
     // glm::value_ptr gets glsl compatible values
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::set_vertex(const std::string& position_name, const std::string& color_name, Vertex& vertex) {
+    set_vec3(position_name, vertex.position);
+    set_vec4(color_name, vertex.color);
 }
 
