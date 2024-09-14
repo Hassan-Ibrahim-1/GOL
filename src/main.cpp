@@ -119,6 +119,8 @@ int main() {
         ImGui::Begin("config");
         ImGui::SetWindowSize("window", ImVec2(IMGUI_WINDOW_WIDTH, IMGUI_WINDOW_HEIGHT));
         ImGui::ColorEdit4("point color", (float*)&point_color);
+        // fps
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
         ImGui::End();
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
