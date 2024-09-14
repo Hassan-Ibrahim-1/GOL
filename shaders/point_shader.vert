@@ -7,6 +7,8 @@ uniform mat4 view;
 uniform mat4 model; // converts vectors to world_space
 
 void main() {
-    gl_Position = view * model * vec4(a_position, 1.0f);
+    vec4 pos = view * model * vec4(a_position, 1.0f);
+    pos.z = 0.0f;
+    gl_Position = pos;
 }
 

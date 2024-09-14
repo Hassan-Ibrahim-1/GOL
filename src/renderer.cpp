@@ -69,20 +69,7 @@ void Renderer::render() {
         else if (draw_mode == DrawMode::LINE) {
             glDrawArrays(GL_LINE_LOOP, 0, 4);
         }
-
-        // wglBindBuffer(GL_ARRAY_BUFFER, )
-
-        /*if (draw_mode == DrawMode::FILL) {*/
-        /*    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_fill_indices.size() * sizeof(float), _rect_fill_indices.data(), GL_STATIC_DRAW);*/
-        /*    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
-        /*}*/
-        /*else if (draw_mode == DrawMode::LINE){*/
-        /*    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);*/
-        /*    glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);*/
-        /*}*/
     }
-    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
     _points.clear();
     _rects.clear();
     _rect_draw_modes.clear();
