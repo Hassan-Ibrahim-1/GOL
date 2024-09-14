@@ -174,9 +174,9 @@ obj/main.o: src/main.cpp glad/include/glad/glad.h \
   /opt/homebrew/include/glm/gtc/../matrix.hpp imgui/imgui.h \
   imgui/imconfig.h imgui/backends/imgui_impl_glfw.h \
   imgui/backends/imgui_impl_opengl3.h src/error_handler.hpp \
-  src/input_handler.hpp src/renderer.hpp src/common.hpp src/shader.hpp \
-  src/settings.hpp src/utils.hpp src/window.hpp src/globals.hpp \
-  src/camera.hpp src/transform.hpp
+  src/input_handler.hpp src/renderer.hpp src/common.hpp src/vertex.hpp \
+  src/point.hpp src/shader.hpp src/settings.hpp src/utils.hpp \
+  src/window.hpp src/globals.hpp src/camera.hpp src/transform.hpp
 
 glad/include/glad/glad.h:
 
@@ -543,6 +543,10 @@ src/input_handler.hpp:
 src/renderer.hpp:
 
 src/common.hpp:
+
+src/vertex.hpp:
+
+src/point.hpp:
 
 src/shader.hpp:
 

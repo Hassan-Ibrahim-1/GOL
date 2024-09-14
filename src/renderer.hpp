@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include "common.hpp"
+#include "point.hpp"
 #include "shader.hpp"
 
 class Renderer {
@@ -12,6 +13,7 @@ public:
     Renderer();
     ~Renderer();
 
+    void draw_point(Point& point);
     void draw_point(glm::vec3& position);
     void draw_point(float x, float y, float z);
 
@@ -53,6 +55,7 @@ private:
     };
 
     void push_point(float x, float y, float z);
+    void push_point_color(glm::vec4& color);
     void push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4);
     void push_rect_point(glm::vec3& point);
 

@@ -17,6 +17,12 @@ Renderer::~Renderer() {
     glDeleteVertexArrays(1, &_rects_vao);
 }
 
+void Renderer::draw_point(Point& point) {
+    // TODO: clean this up make draw point
+    draw_point(point.position);
+    push_point_color(point.color);
+}
+
 void Renderer::draw_point(glm::vec3& position) {
     draw_point(position.x, position.y, position.z);
 }
@@ -48,8 +54,8 @@ void Renderer::render() {
     glDrawArrays(GL_POINTS, 0, _points.size());
 
     // shaders.point.use();
-    glBindVertexArray(_rects_vao);
-    glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+    /*glBindVertexArray(_rects_vao);*/
+    /*glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);*/
     _points.clear();
     _rects.clear();
 }
@@ -58,6 +64,13 @@ void Renderer::push_point(float x, float y, float z) {
     _points.push_back(x);
     _points.push_back(y);
     _points.push_back(z);
+}
+
+void Renderer::push_point_color(glm::vec4& color) {
+    _points.push_back(color.r);
+    _points.push_back(color.g);
+    _points.push_back(color.b);
+    _points.push_back(color.a);
 }
 
 void Renderer::push_rect_point(glm::vec3& point) {
@@ -92,21 +105,25 @@ void Renderer::update_vbos() {
 
 void Renderer::init_vaos() {
     glGenVertexArrays(1, &_points_vao);
-    // not sure if this is needed
     glBindVertexArray(_points_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _points_vbo);
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 3, (void*)0);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 7, (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 7, (void*)(sizeof(float) * 3));
+    glEnableVertexAttribArray(1);
 
     glGenVertexArrays(1, &_rects_vao);
     glBindVertexArray(_rects_vao);
     glBindBuffer(GL_ARRAY_BUFFER, _rects_vbo);
 
+    // ebo
     glGenBuffers(1, &_rects_ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rects_ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _rect_outline_indices.size() * sizeof(float), _rect_outline_indices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 3, (void*)0);
+    // glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 3, (void*)0);
     glEnableVertexAttribArray(0);
 }
 

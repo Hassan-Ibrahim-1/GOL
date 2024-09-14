@@ -82,6 +82,9 @@ int main() {
     Renderer renderer;
     Globals::renderer = &renderer;
 
+    // imgui state
+    ImVec4 point_color(1.0f, 0.0f, 0.0f, 1.0f);
+
     while (!glfwWindowShouldClose(window.get_window())) {
         float current_frame = glfwGetTime();
         delta_time = current_frame - last_frame;
@@ -115,6 +118,7 @@ int main() {
 
         ImGui::Begin("config");
         ImGui::SetWindowSize("window", ImVec2(IMGUI_WINDOW_WIDTH, IMGUI_WINDOW_HEIGHT));
+        ImGui::ColorEdit3("point color", (float*)&point_color);
         ImGui::End();
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -122,7 +126,12 @@ int main() {
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
         // renderer.draw_point(0, 0, 1);
-        renderer.draw_rect(0.5, 0.5, 0, 0, 0);
+        /*renderer.draw_rect(0.5, 0.5, 0, 0, 0);*/
+        glm::vec3 position(0);
+        glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
+        Point point(position, color);
+        renderer.draw_point(point);
+
         renderer.render();
 
         // render imgui windows

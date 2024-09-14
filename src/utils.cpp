@@ -4,6 +4,10 @@ glm::vec3 Utils::imvec4_to_glm_vec3(ImVec4& vec) {
     return glm::vec3(vec.x, vec.y, vec.z);
 }
 
+glm::vec4 Utils::imvec4_to_glm_vec4(ImVec4& vec) {
+    return glm::vec4(vec.x, vec.y, vec.z, vec.w);
+}
+
 ImVec4 Utils::glm_vec3_to_imvec4(glm::vec3& vec) {
     return ImVec4(vec.x, vec.y, vec.z, 0);
 }
