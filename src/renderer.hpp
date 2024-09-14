@@ -14,9 +14,12 @@ public:
     ~Renderer();
 
     void draw_point(Point& point);
+    // TODO: Clean up
     void draw_point(glm::vec3& position);
     void draw_point(float x, float y, float z);
 
+    void draw_rect(Rect& rect);
+    // TODO: Clean up
     void draw_rect(float width, float height, glm::vec3& position);
     void draw_rect(float width, float height, float x, float y, float z);
 
@@ -31,10 +34,9 @@ private:
 
     struct Shaders {
         Shaders() = default;
+
         Shader point;
-        // Shader rect;
     } shaders;
-    // Shaders shaders = Shaders();
 
     uint _points_vao;
     uint _points_vbo;
@@ -56,8 +58,10 @@ private:
 
     void push_point(float x, float y, float z);
     void push_point_color(glm::vec4& color);
+
     void push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4);
     void push_rect_point(glm::vec3& point);
+    void push_rect_color(glm::vec4& color);
 
     void init_vbos();
     void update_vbos();

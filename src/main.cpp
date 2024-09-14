@@ -129,8 +129,9 @@ int main() {
         /*renderer.draw_rect(0.5, 0.5, 0, 0, 0);*/
         glm::vec3 position(0);
         glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
-        Point point(position, color);
-        renderer.draw_point(point);
+        /*Point point(position, color);*/
+        Rect rect(position, 0.2f, 0.2f, color);
+        renderer.draw_rect(rect);
 
         renderer.render();
 

@@ -150,7 +150,7 @@ obj/input_handler.o: src/input_handler.cpp \
   /opt/homebrew/include/glm/integer.hpp \
   /opt/homebrew/include/glm/detail/func_integer.inl src/transform.hpp \
   src/renderer.hpp src/common.hpp src/vertex.hpp src/point.hpp \
-  src/shader.hpp src/settings.hpp src/input_handler.hpp
+  src/rect.hpp src/shader.hpp src/settings.hpp src/input_handler.hpp
 
 /opt/homebrew/include/GLFW/glfw3.h:
 
@@ -469,6 +469,8 @@ src/common.hpp:
 src/vertex.hpp:
 
 src/point.hpp:
+
+src/rect.hpp:
 
 src/shader.hpp:
 
