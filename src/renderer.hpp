@@ -15,6 +15,11 @@ enum class DrawMode {
 
 class Renderer {
 public:
+    struct Shaders {
+        Shaders() = default;
+        Shader point;
+    } shaders;
+
     Renderer();
     ~Renderer();
 
@@ -31,14 +36,8 @@ public:
 
 private:
     std::vector<float> _points;
-    std::vector<float> _rects;
+    std::vector<Rect> _rects;
     std::vector<DrawMode> _rect_draw_modes;
-
-    struct Shaders {
-        Shaders() = default;
-
-        Shader point;
-    } shaders;
 
     uint _points_vao;
     uint _points_vbo;
@@ -53,9 +52,16 @@ private:
         2, 3,
     };
 
-    static constexpr std::array<uint, 6> _rect_fill_indices = {
+    static constexpr std::array<float, 12> _rect_vertices = {
+        0.5f, 0.5f, 0.0f, // top right
+        0.5f, -0.5f, 0.0f, // bottom right
+       -0.5f, -0.5f, 0.0f, // bottom left
+       -0.5f, 0.5f, 0.0f // top left
+    };
+
+    static constexpr std::array<uint, 6> _rect_indices = {
         0, 1, 3,
-        0, 2, 3 
+        1, 2, 3 
     };
 
     void push_point(float x, float y, float z);

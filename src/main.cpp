@@ -82,8 +82,17 @@ int main() {
     Renderer renderer;
     Globals::renderer = &renderer;
 
+    Camera& camera = Globals::camera;
+    camera = Camera(glm::vec3(0.0f, 0.0f, 1.0f));
+
+    glm::mat4 projection = glm::perspective(glm::radians(camera.fov), (float) WINDOW_WIDTH / WINDOW_HEIGHT, 0.1f, 100.0f);
+    renderer.shaders.point.set_mat4("projection", projection);
+
     // imgui state
     ImVec4 point_color(1.0f, 0.0f, 0.0f, 1.0f);
+    bool rect_fill = true;
+    ImVec4 position(0.0f, 0.0f, 0.0f, 0.0f);
+    ImVec4 scale(1.0f, 1.0f, 1.0f, 0.0f);
 
     while (!glfwWindowShouldClose(window.get_window())) {
         float current_frame = glfwGetTime();
@@ -119,6 +128,9 @@ int main() {
         ImGui::Begin("config");
         ImGui::SetWindowSize("window", ImVec2(IMGUI_WINDOW_WIDTH, IMGUI_WINDOW_HEIGHT));
         ImGui::ColorEdit4("point color", (float*)&point_color);
+        ImGui::Checkbox("fill", &rect_fill);
+        ImGui::DragFloat4("position", (float*)&position);
+        ImGui::DragFloat4("scale", (float*)&scale);
         // fps
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
         ImGui::End();
@@ -127,13 +139,18 @@ int main() {
         /*glClearColor(1.0f, 1.0f, 1.0f, 1.0f);*/
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
+        glm::mat4 view = camera.get_view_matrix();
+        renderer.shaders.point.set_mat4("view", view);
+
         // renderer.draw_point(0, 0, 1);
         /*renderer.draw_rect(0.5, 0.5, 0, 0, 0);*/
-        glm::vec3 position(0);
+        glm::vec3 rect_position = Utils::imvec4_to_glm_vec3(position);
+        glm::vec3 rect_scale = Utils::imvec4_to_glm_vec3(scale);
         glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
         /*Point point(position, color);*/
-        Rect rect(position, 0.4f, 0.4f, color);
-        renderer.draw_rect(rect, DrawMode::LINE);
+        Transform transform(rect_position, Rotation(), rect_scale);
+        Rect rect(transform, color);
+        renderer.draw_rect(rect, rect_fill ? DrawMode::FILL : DrawMode::LINE);
         /*rect.position.y = 0.1f;*/
         /*rect.width = 0.2f;*/
         /*renderer.draw_rect(rect);*/
