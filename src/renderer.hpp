@@ -67,10 +67,6 @@ private:
     void push_point(float x, float y, float z);
     void push_point_color(glm::vec4& color);
 
-    void push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4, glm::vec4& color);
-    void push_rect_point(glm::vec3& point);
-    void push_rect_color(glm::vec4& color);
-
     void init_vbos();
     void update_vbos();
     void init_vaos();

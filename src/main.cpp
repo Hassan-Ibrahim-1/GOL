@@ -134,21 +134,17 @@ int main() {
         glm::mat4 view = camera.get_view_matrix();
         renderer.shaders.point.set_mat4("view", view);
 
-        // renderer.draw_point(0, 0, 1);
-        /*renderer.draw_rect(0.5, 0.5, 0, 0, 0);*/
         glm::vec3 rect_position = Utils::imvec4_to_glm_vec3(position);
         glm::vec3 rect_scale = Utils::imvec4_to_glm_vec3(scale);
         glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
-        /*Point point(position, color);*/
+
         Transform transform(rect_position, Rotation(), rect_scale);
         Rect rect(transform, color);
         renderer.draw_rect(rect, rect_fill ? DrawMode::FILL : DrawMode::LINE);
+
         Transform transform2(glm::vec3(0), Rotation(), glm::vec3(1));
         Rect rect2(transform2, glm::vec4(1));
-        renderer.draw_rect(rect2, DrawMode::FILL);
-        /*rect.position.y = 0.1f;*/
-        /*rect.width = 0.2f;*/
-        /*renderer.draw_rect(rect);*/
+        renderer.draw_rect(rect2, !rect_fill ? DrawMode::FILL : DrawMode::LINE);
 
         renderer.render();
 

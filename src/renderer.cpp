@@ -1,10 +1,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <glad/glad.h>
-#include <iostream>
 
 #include "renderer.hpp"
-#include "error_handler.hpp"
 
 Renderer::Renderer() {
     init_vbos();
@@ -33,29 +31,20 @@ void Renderer::reload_shaders() {
 }
 
 void Renderer::draw_rect(Rect& rect, DrawMode draw_mode) {
-    /*draw_rect(rect.width, rect.height, rect.position, rect.color);*/
     _rects.push_back(rect);
     _rect_draw_modes.push_back(draw_mode);
 }
 
-void Renderer::draw_rect(float width, float height, glm::vec3 position, glm::vec4 color) {
-    glm::vec3 v1(position.x, position.y, position.z);
-    glm::vec3 v2(position.x + width, position.y, position.z);
-    glm::vec3 v3(position.x, position.y - height, position.z);
-    glm::vec3 v4(position.x + width, position.y - height, position.z);
-    push_rect(v1, v2, v3, v4, color);
-}
-
 void Renderer::render() {
     update_vbos();
+
     shaders.point.use();
 
     glBindVertexArray(_points_vao);
     glDrawArrays(GL_POINTS, 0, _points.size());
 
     glBindVertexArray(_rects_vao);
-    size_t i = 0;
-    for (; i < _rects.size(); i++) {
+    for (size_t i = 0; i < _rects.size(); i++) {
         Rect& rect = _rects[i];
         DrawMode draw_mode = _rect_draw_modes[i];
 
@@ -73,7 +62,6 @@ void Renderer::render() {
             glDrawArrays(GL_LINE_LOOP, 0, 4);
         }
     }
-    std::cout << "i: " << i << '\n';
     _points.clear();
     _rects.clear();
     _rect_draw_modes.clear();
@@ -90,30 +78,6 @@ void Renderer::push_point_color(glm::vec4& color) {
     _points.push_back(color.g);
     _points.push_back(color.b);
     _points.push_back(color.a);
-}
-
-void Renderer::push_rect(glm::vec3& v1, glm::vec3& v2, glm::vec3& v3, glm::vec3& v4, glm::vec4& color) {
-    push_rect_point(v1);
-    push_rect_color(color);
-    push_rect_point(v2);
-    push_rect_color(color);
-    push_rect_point(v3);
-    push_rect_color(color);
-    push_rect_point(v4);
-    push_rect_color(color);
-}
-
-void Renderer::push_rect_point(glm::vec3& point) {
-    /*_rects.push_back(point.x);*/
-    /*_rects.push_back(point.y);*/
-    /*_rects.push_back(point.z);*/
-}
-
-void Renderer::push_rect_color(glm::vec4& color) {
-    /*_rects.push_back(color.r);*/
-    /*_rects.push_back(color.g);*/
-    /*_rects.push_back(color.b);*/
-    /*_rects.push_back(color.a);*/
 }
 
 void Renderer::init_vbos() {
@@ -151,9 +115,6 @@ void Renderer::init_vaos() {
 
     glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 3, (void*)0);
     glEnableVertexAttribArray(0);
-
-    /*glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(float) * 7, (void*)(sizeof(float) * 3));*/
-    /*glEnableVertexAttribArray(1);*/
 }
 
 void Renderer::init_shaders() {

@@ -1,10 +1,11 @@
-things to implement:
-- rect fill and line mode
-- proper rect centering
-- make the renderer use world space
-- Make rect struct 4 vertices and have color data for each of them
+# things to implement:
+- Save button in imgui that saves current values to a file that gets read at init
 
-
+# Done:
+- rect transforms -- done
+- make the renderer use world space -- done
+- proper rect centering -- done
+- rect fill and line mode -- done
 - Rect struct -- done
 - Point struct -- done
 - Vertex struct (color and position) -- done
