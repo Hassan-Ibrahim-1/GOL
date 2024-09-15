@@ -20,9 +20,6 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
-#define IMGUI_WINDOW_WIDTH 400
-#define IMGUI_WINDOW_HEIGHT 250
-
 static void cleanup();
 
 int main() {
@@ -105,15 +102,6 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::Begin("config");
-        ImGui::SetWindowSize("window", ImVec2(IMGUI_WINDOW_WIDTH, IMGUI_WINDOW_HEIGHT));
-        ImGui::ColorEdit4("point color", (float*)&point_color);
-        ImGui::Checkbox("fill", &rect_fill);
-        ImGui::DragFloat2("position", (float*)&position, 0.01f, -1.0f, 1.0f);
-        ImGui::DragFloat2("scale", (float*)&scale, 0.01f, -2.0f, 2.0f);
-        // fps
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-        ImGui::End();
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -126,10 +114,6 @@ int main() {
         glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
 
         Sim::run();
-
-        /*Transform transform(rect_position, Rotation(), rect_scale);*/
-        /*Rect rect(transform, color);*/
-        /*renderer.draw_rect(rect, rect_fill ? DrawMode::FILL : DrawMode::LINE);*/
 
         renderer.render();
 
