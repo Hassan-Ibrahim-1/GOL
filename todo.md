@@ -1,5 +1,10 @@
 # things to implement:
+- Cells
+- Grid
+- Automatically resizing grid
+
 - Save button in imgui that saves current values to a file that gets read at init
+    chose which values get saved in code
 
 # Done:
 - rect transforms -- done
