@@ -143,6 +143,9 @@ int main() {
         Transform transform(rect_position, Rotation(), rect_scale);
         Rect rect(transform, color);
         renderer.draw_rect(rect, rect_fill ? DrawMode::FILL : DrawMode::LINE);
+        Transform transform2(glm::vec3(0), Rotation(), glm::vec3(1));
+        Rect rect2(transform2, glm::vec4(1));
+        renderer.draw_rect(rect2, DrawMode::FILL);
         /*rect.position.y = 0.1f;*/
         /*rect.width = 0.2f;*/
         /*renderer.draw_rect(rect);*/

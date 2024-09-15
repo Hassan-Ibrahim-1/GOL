@@ -1,8 +1,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <glad/glad.h>
+#include <iostream>
 
 #include "renderer.hpp"
+#include "error_handler.hpp"
 
 Renderer::Renderer() {
     init_vbos();
@@ -52,7 +54,8 @@ void Renderer::render() {
     glDrawArrays(GL_POINTS, 0, _points.size());
 
     glBindVertexArray(_rects_vao);
-    for (size_t i = 0; i < _rects.size(); i++) {
+    size_t i = 0;
+    for (; i < _rects.size(); i++) {
         Rect& rect = _rects[i];
         DrawMode draw_mode = _rect_draw_modes[i];
 
@@ -70,6 +73,7 @@ void Renderer::render() {
             glDrawArrays(GL_LINE_LOOP, 0, 4);
         }
     }
+    std::cout << "i: " << i << '\n';
     _points.clear();
     _rects.clear();
     _rect_draw_modes.clear();
