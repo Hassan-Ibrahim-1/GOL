@@ -9,6 +9,6 @@ Cell::Cell(glm::vec3 position, glm::vec4 color)
     : rect(position, color) {}
 
 void Cell::render() {
-    Globals::renderer->draw_rect(rect, DrawMode::FILL);
+    Globals::renderer->draw_rect(rect, fill ? DrawMode::FILL : DrawMode::LINE);
 }
 

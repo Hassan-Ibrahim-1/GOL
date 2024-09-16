@@ -6,6 +6,7 @@
 
 struct Cell {
     Rect rect;
+    bool fill = false;
 
     Cell() = default;
     Cell(Transform transform, glm::vec4 color);

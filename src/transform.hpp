@@ -18,6 +18,6 @@ public:
 
     Transform(glm::vec3 position = glm::vec3(),
               Rotation rotation = Rotation(),
-              glm::vec3 scale = glm::vec3());
+              glm::vec3 scale = glm::vec3(1));
 };
 
