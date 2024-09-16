@@ -8,7 +8,7 @@ namespace Sim {
 
 inline Rect _rect;
 inline Renderer* _renderer;
-inline uint n_cells = 120;
+inline uint n_cells = 4;
 
 void init();
 void run();

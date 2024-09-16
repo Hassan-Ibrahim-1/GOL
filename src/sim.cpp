@@ -38,18 +38,31 @@ void Sim::create_imgui_windows() {
 }
 
 void Sim::create_rect_grid() {
-    // Cell cell(glm::vec3(_rect.transform.position.x / 2, _rect.transform.position.y / 2, 1), glm::vec4(1));
     std::vector<Cell> cells;
 
-    uint f1 = (int) glm::sqrt(n_cells);
-    uint f2 = f1;
-    for (; f2 * f1 != n_cells; f2++) {
-        if (f2  > 1000) {
-            ErrorHandler::error("no factor found below 1000");
-            std::exit(-1);
-            break;
-        }
+    // Find the closest factors
+    uint f1 = (uint) glm::sqrt(n_cells); //
+    while (n_cells % f1 != 0) {
+        f1--;
     }
-    printf("f1: %d, f2: %d\n", f1, f2);
+    // f2 > f1
+    uint f2 = n_cells / f1; // along the width
+    printf("f1: %u, f2: %u\n", f1, f2);
+
+    uint n_rows = 0;
+    uint n_cols = 0;
+    
+    // put the larger factor amount of cells on the larger side
+    if (_rect.transform.scale.x > _rect.transform.scale.y) {
+        n_rows = f1 - 1;
+        n_cols = f2 - 1;
+    }
+    else {
+        n_rows = f2 - 1;
+        n_cols = f1 - 1;
+    }
+    printf("rows: %u, cols: %u\n", n_rows, n_cols);
+
+    // TODO: figure out width
 }
 
