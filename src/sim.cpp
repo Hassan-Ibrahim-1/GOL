@@ -1,6 +1,7 @@
 #include <glm/glm.hpp>
 
 #include "sim.hpp"
+#include "cell.hpp"
 #include "globals.hpp"
 
 void Sim::init() {
@@ -11,7 +12,12 @@ void Sim::init() {
 
 void Sim::run() {
     create_imgui_windows();
+    create_rect_grid();
     _renderer->draw_rect(_rect, DrawMode::LINE);
+}
+
+void Sim::end() {
+
 }
 
 void Sim::create_imgui_windows() {
@@ -25,7 +31,9 @@ void Sim::create_imgui_windows() {
     ImGui::End();
 }
 
-void Sim::end() {
-
+void Sim::create_rect_grid() {
+    Cell cell(glm::vec3(_rect.transform.position.x / 2, _rect.transform.position.y / 2, 1), glm::vec4(1));
+    cell.rect.transform.scale = glm::vec3(1);
+    cell.render();
 }
 
