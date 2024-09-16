@@ -1,17 +1,13 @@
 #pragma once
 
-#include "imgui.h"
-
 #include "rect.hpp"
 #include "renderer.hpp"
 
 namespace Sim {
 
 inline Rect _rect;
+// inline Transform _rect_transform = Transform(glm::vec3(-0.28f, 0.0f, 0.0f), Rotation(), glm::vec3(1.39f, 1.89f, 1.0f));
 inline Renderer* _renderer;
-
-// imgui state variables
-inline ImVec4 _rect_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 void init();
 void run();

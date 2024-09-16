@@ -102,16 +102,11 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
         glm::mat4 view = camera.get_view_matrix();
         renderer.shaders.point.set_mat4("view", view);
-
-        glm::vec3 rect_position = Utils::imvec4_to_glm_vec3(position);
-        glm::vec3 rect_scale = Utils::imvec4_to_glm_vec3(scale);
-        glm::vec4 color = Utils::imvec4_to_glm_vec4(point_color);
 
         Sim::run();
 

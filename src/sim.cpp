@@ -17,11 +17,11 @@ void Sim::run() {
 void Sim::create_imgui_windows() {
     ImGui::Begin("sim bg");
     ImGui::SetWindowSize("window", ImVec2(400, 250));
-    ImGui::ColorEdit4("point color", (float*)&_rect.color.a, (float*)_rect.color.b);
-    /*ImGui::DragFloat2("position", (float*)&position, 0.01f, -1.0f, 1.0f);*/
-    /*ImGui::DragFloat2("scale", (float*)&scale, 0.01f, -2.0f, 2.0f);*/
+    ImGui::ColorEdit4("rect color", (float*)&_rect.color);
+    ImGui::DragFloat2("rect position", (float*)&_rect.transform.position, 0.01f, -1.0f, 1.0f);
+    ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
     // fps
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / Globals::io->Framerate, Globals::io->Framerate);
     ImGui::End();
 }
 
