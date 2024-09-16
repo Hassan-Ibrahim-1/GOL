@@ -30,6 +30,8 @@ void Sim::create_imgui_windows() {
     ImGui::DragFloat2("rect position", (float*)&_rect.transform.position, 0.01f, -1.0f, 1.0f);
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
     ImGui::DragInt("num cells", (int*)&n_cells, 1, 1, 1000);
+    ImGui::DragFloat3("cell pos", (float*)&cell_pos, 0.001f, -1.0f, 1.0f);
+    ImGui::DragFloat3("cell scale", (float*)&cell_scale, 0.001f, -2.0f, 2.0f);
 
     // fps
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / Globals::io->Framerate, Globals::io->Framerate);
@@ -47,7 +49,7 @@ void Sim::create_rect_grid() {
     }
     // f2 > f1
     uint f2 = n_cells / f1; // along the width
-    printf("f1: %u, f2: %u\n", f1, f2);
+    /*printf("f1: %u, f2: %u\n", f1, f2);*/
 
     uint n_rows = 0;
     uint n_cols = 0;
@@ -61,8 +63,28 @@ void Sim::create_rect_grid() {
         n_rows = f2 - 1;
         n_cols = f1 - 1;
     }
-    printf("rows: %u, cols: %u\n", n_rows, n_cols);
+    /*printf("rows: %u, cols: %u\n", n_rows, n_cols);*/
 
-    // TODO: figure out width
+
+    Transform cell_t = Transform();
+    cell_t.scale.x = _rect.transform.scale.x / n_cols;
+    cell_t.scale.y = _rect.transform.scale.y / n_rows;
+
+    cell_scale = cell_t.scale;
+
+    // make cell go to the upper left corner
+    cell_t.position.x = (-0.5 * _rect.transform.scale.x) + _rect.transform.position.x;
+    // + here to make the cell go to the right
+    cell_t.position.x += (cell_t.scale.x / 2);
+
+    // - here to make the cell go downwards - opposite of vao coordinate
+    cell_t.position.y = (0.5 * _rect.transform.scale.y) + _rect.transform.position.y;
+    cell_t.position.y -= (cell_t.scale.y / 2);
+
+    cell_pos = cell_t.position;
+
+
+    Cell cell(cell_t, glm::vec4(1));
+    cell.render();
 }
 

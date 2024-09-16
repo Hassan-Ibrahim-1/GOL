@@ -8,7 +8,9 @@ namespace Sim {
 
 inline Rect _rect;
 inline Renderer* _renderer;
-inline uint n_cells = 4;
+inline uint n_cells = 120;
+inline glm::vec3 cell_pos = glm::vec3(0);
+inline glm::vec3 cell_scale = glm::vec3(1);
 
 void init();
 void run();

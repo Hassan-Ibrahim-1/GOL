@@ -40,7 +40,7 @@ int main() {
     }
 
     glfwSetKeyCallback(window.get_window(), InputHandler::key_callback);
-    /*glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);*/
+    glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);
     /*glfwSetScrollCallback(window.get_window(), InputHandler::mouse_scroll_callback);*/
 
     // Enable vsync

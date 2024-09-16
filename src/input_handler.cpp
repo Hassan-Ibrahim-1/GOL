@@ -1,6 +1,7 @@
 #include "GLFW/glfw3.h"
 
 #include "globals.hpp"
+#include "imgui.h"
 #include "settings.hpp"
 #include "camera.hpp"
 
@@ -63,6 +64,8 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
 }
 
 void InputHandler::mouse_movement_callback(GLFWwindow* window, double posx, double posy) {
+    return;
+
     if (Settings::cursor_enabled) {
         last_mouse_x = posx;
         last_mouse_y = posy;
