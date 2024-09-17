@@ -29,7 +29,7 @@ void Sim::create_imgui_windows() {
     ImGui::ColorEdit4("rect color", (float*)&_rect.color);
     ImGui::DragFloat2("rect position", (float*)&_rect.transform.position, 0.01f, -1.0f, 1.0f);
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
-    ImGui::DragInt("num cells", (int*)&n_cells, 1, 1, 1000);
+    ImGui::DragInt("num cells", (int*)&n_cells, 1, 1, 10000);
     ImGui::DragFloat3("cell pos", (float*)&cell_pos, 0.001f, -1.0f, 1.0f);
     ImGui::DragFloat3("cell scale", (float*)&cell_scale, 0.001f, -2.0f, 2.0f);
 
@@ -83,12 +83,16 @@ void Sim::create_rect_grid() {
 
     cell_pos = cell_t.position;
 
-    Transform cell_t2 = cell_t;
-    cell_t2.position.x += (cell_t.scale.x);
+    float original_xpos = cell_t.position.x;
 
-    Cell cell(cell_t, glm::vec4(1));
-    cell.render();
-    Cell cell2(cell_t2, glm::vec4(1));
-    cell2.render();
+    for (uint i = 0; i < n_rows; i++) {
+        for (uint j = 0; j < n_cols; j++) {
+            Cell cell(cell_t, glm::vec4(1));
+            cell.render();
+            cell_t.position.x += cell_t.scale.x;
+        }
+        cell_t.position.x = original_xpos;
+        cell_t.position.y -= cell_t.scale.y;
+    }
 }
 
