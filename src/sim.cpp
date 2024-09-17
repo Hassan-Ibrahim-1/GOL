@@ -1,7 +1,6 @@
 #include <glm/glm.hpp>
 
 #include "sim.hpp"
-#include "cell.hpp"
 #include "globals.hpp"
 #include "imgui.h"
 
@@ -13,7 +12,8 @@ void Sim::init() {
 
 void Sim::run() {
     create_imgui_windows();
-    create_rect_grid();
+    create_grid();
+    render_cells();
     _renderer->draw_rect(_rect, DrawMode::LINE);
 }
 
@@ -28,9 +28,7 @@ void Sim::create_imgui_windows() {
     ImGui::ColorEdit4("rect color", (float*)&_rect.color);
     ImGui::DragFloat2("rect position", (float*)&_rect.transform.position, 0.01f, -1.0f, 1.0f);
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
-    ImGui::DragInt("num cells", (int*)&n_cells, 1, 1, 10000);
-    /*ImGui::DragFloat3("cell pos", (float*)&cell_pos, 0.001f, -1.0f, 1.0f);*/
-    /*ImGui::DragFloat3("cell scale", (float*)&cell_scale, 0.001f, -2.0f, 2.0f);*/
+    ImGui::DragInt("num cells", (int*)&_ncells, 1, 1, 10000);
 
     // fps
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / Globals::io->Framerate, Globals::io->Framerate);
@@ -38,16 +36,14 @@ void Sim::create_imgui_windows() {
     ImGui::End();
 }
 
-void Sim::create_rect_grid() {
-    std::vector<Cell> cells;
-
+void Sim::create_grid() {
     // Find the closest factors
-    uint f1 = (uint) glm::sqrt(n_cells);
-    while (n_cells % f1 != 0) {
+    uint f1 = (uint) glm::sqrt(_ncells);
+    while (_ncells % f1 != 0) {
         f1--;
     }
     // f2 > f1
-    uint f2 = n_cells / f1; // along the width
+    uint f2 = _ncells / f1; // along the width
 
     uint n_rows = 0;
     uint n_cols = 0;
@@ -80,13 +76,19 @@ void Sim::create_rect_grid() {
     // render all cells
     for (uint i = 0; i < n_rows; i++) {
         for (uint j = 0; j < n_cols; j++) {
-            Cell cell(cell_t, glm::vec4(1));
+            _cells.push_back(Cell(cell_t, glm::vec4(1)));
             /*cell.fill = j % 2 == 0 && i % 3 == 0;*/
-            cell.render();
+            /*cell.render();*/
             cell_t.position.x += cell_t.scale.x;
         }
         cell_t.position.x = original_xpos;
         cell_t.position.y -= cell_t.scale.y;
+    }
+}
+
+void Sim::render_cells() {
+    for (Cell& cell : _cells) {
+        cell.render();
     }
 }
 
