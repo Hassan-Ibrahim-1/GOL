@@ -81,7 +81,7 @@ void Sim::create_rect_grid() {
     for (uint i = 0; i < n_rows; i++) {
         for (uint j = 0; j < n_cols; j++) {
             Cell cell(cell_t, glm::vec4(1));
-            cell.fill = j % 2 == 0 && i % 2 == 0;
+            /*cell.fill = j % 2 == 0 && i % 3 == 0;*/
             cell.render();
             cell_t.position.x += cell_t.scale.x;
         }
