@@ -1,7 +1,6 @@
 #include "GLFW/glfw3.h"
 
 #include "globals.hpp"
-#include "imgui.h"
 #include "settings.hpp"
 #include "camera.hpp"
 
@@ -18,7 +17,6 @@ void InputHandler::process_input(GLFWwindow* window, float delta_time) {
 
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
         camera.process_keyboard(CameraDirection::UP, delta_time);
-        /*glfwSetWindowShouldClose(window, true);*/
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
         camera.process_keyboard(CameraDirection::DOWN, delta_time);

@@ -40,7 +40,7 @@ int main() {
     }
 
     glfwSetKeyCallback(window.get_window(), InputHandler::key_callback);
-    glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);
+    /*glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);*/
     /*glfwSetScrollCallback(window.get_window(), InputHandler::mouse_scroll_callback);*/
 
     // Enable vsync
@@ -83,7 +83,7 @@ int main() {
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-        InputHandler::process_input(window.get_window(), delta_time);
+        /*InputHandler::process_input(window.get_window(), delta_time);*/
 
         if (glfwGetWindowAttrib(window.get_window(), GLFW_ICONIFIED) != 0) {
             ImGui_ImplGlfw_Sleep(10);
