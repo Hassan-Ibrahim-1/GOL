@@ -83,8 +83,12 @@ void Sim::create_rect_grid() {
 
     cell_pos = cell_t.position;
 
+    Transform cell_t2 = cell_t;
+    cell_t2.position.x += (cell_t.scale.x);
 
     Cell cell(cell_t, glm::vec4(1));
     cell.render();
+    Cell cell2(cell_t2, glm::vec4(1));
+    cell2.render();
 }
 
