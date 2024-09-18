@@ -13,14 +13,14 @@ void Sim::init() {
     init_direction_offsets();
     create_grid();
     spawn_initial_cells();
-    start_time = glfwGetTime();
+    _start_time = glfwGetTime();
 }
 
 void Sim::run() {
     create_imgui_windows();
-    if (start_time + 0.1f < glfwGetTime()) {
+    if (_start_time + _time_offset < glfwGetTime()) {
         update(); // renders cells
-        start_time = glfwGetTime();
+        _start_time = glfwGetTime();
     }
     else {
         render_cells();
@@ -41,6 +41,7 @@ void Sim::create_imgui_windows() {
     ImGui::DragFloat2("rect position", (float*)&_rect.transform.position, 0.01f, -1.0f, 1.0f);
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
     ImGui::DragInt("num cells", (int*)&_ncells, 1, 1, 10000);
+    ImGui::DragFloat("time offset", &_time_offset, 0.01f, 0.1f, 100.0f);
 
     ImGui::Text("mouse_pos (%.3f, %.3f)", Globals::mouse_pos.x, Globals::mouse_pos.y);
 
@@ -108,18 +109,37 @@ void Sim::update() {
     for (size_t i = 0; i < _cells.size(); i++) {
         Cell& cell = _cells[i];
         uint n_neighbours = cell_neighbours(i);
-        if (n_neighbours > 3) {
+        if (n_neighbours > 0) {
+            printf("neighbours = %u\n", n_neighbours);
+        }
+        if (n_neighbours < 2) {
             cell.fill = false;
         }
-        else if (n_neighbours == 3) {
-            cell.fill = true;
+        else if (n_neighbours == 3 || n_neighbours == 2) {
+            if (!cell.fill){
+                cell.fill = n_neighbours != 3;
+            }
         }
-        else if (n_neighbours < 2) {
-            cell.fill = false;
+        else if (n_neighbours > 3) {
+            if (cell.fill) {
+                cell.fill = false;
+            }
         }
-        else {
-            cell.fill = true;
-        }
+        /*if (n_neighbours > 3) {*/
+        /*    cell.fill = false;*/
+        /*}*/
+        /*else if (n_neighbours == 3) {*/
+        /*    cell.fill = true;*/
+        /*}*/
+        /*else if (n_neighbours == 2) {*/
+        /*    // what*/
+        /*    if (cell.fill) {*/
+        /*        cell.fill = true;*/
+        /*    }*/
+        /*}*/
+        /*else if (n_neighbours < 2) {*/
+        /*    cell.fill = false;*/
+        /*}*/
         cell.rect.color = _rect.color;
         cell.render();
     }
