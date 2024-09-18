@@ -62,6 +62,10 @@ void InputHandler::key_callback(GLFWwindow* window, int key, int scancode, int a
 }
 
 void InputHandler::mouse_movement_callback(GLFWwindow* window, double posx, double posy) {
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    Globals::mouse_pos.x = posx / width;
+    Globals::mouse_pos.y = posy / height;
     return;
 
     if (Settings::cursor_enabled) {

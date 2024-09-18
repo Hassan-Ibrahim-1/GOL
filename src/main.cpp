@@ -34,13 +34,15 @@ int main() {
 
     Window window(WINDOW_WIDTH, WINDOW_HEIGHT, "Bebe");
 
+    glfwSetInputMode(window.get_window(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
     if (ErrorHandler::had_error) {
         cleanup();
         return -1;
     }
 
     glfwSetKeyCallback(window.get_window(), InputHandler::key_callback);
-    /*glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);*/
+    glfwSetCursorPosCallback(window.get_window(), InputHandler::mouse_movement_callback);
     /*glfwSetScrollCallback(window.get_window(), InputHandler::mouse_scroll_callback);*/
 
     // Enable vsync
@@ -83,19 +85,17 @@ int main() {
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-        /*InputHandler::process_input(window.get_window(), delta_time);*/
-
         if (glfwGetWindowAttrib(window.get_window(), GLFW_ICONIFIED) != 0) {
             ImGui_ImplGlfw_Sleep(10);
             continue;
         }
 
-        if (Settings::wireframe_enabled) {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        }
-        else {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        }
+        /*if (Settings::wireframe_enabled) {*/
+        /*    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
+        /*}*/
+        /*else {*/
+        /*    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
+        /*}*/
 
         // start imgui frame
         ImGui_ImplOpenGL3_NewFrame();
@@ -110,11 +110,11 @@ int main() {
 
         Sim::run();
 
-        renderer.render();
-
         // render imgui windows
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        renderer.render();
 
         glfwSwapBuffers(window.get_window());
         glfwPollEvents();
