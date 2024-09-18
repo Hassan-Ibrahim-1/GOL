@@ -18,12 +18,10 @@ void Sim::init() {
 
 void Sim::run() {
     create_imgui_windows();
+    render_cells();
     if (_start && _start_time + _time_offset < glfwGetTime()) {
         update(); // renders cells
         _start_time = glfwGetTime();
-    }
-    else {
-        render_cells();
     }
     /*render_cells();*/
     _renderer->draw_rect(_rect, DrawMode::LINE);
@@ -113,9 +111,6 @@ void Sim::update() {
     for (size_t i = 0; i < _cells.size(); i++) {
         Cell& cell = _cells[i];
         uint n_neighbours = cell_neighbours(i);
-        if (n_neighbours > 0) {
-            printf("neighbours = %u\n", n_neighbours);
-        }
         if (n_neighbours < 2) {
             _cell_fills[i] = false;
         }
@@ -179,8 +174,8 @@ void Sim::spawn_initial_cells() {
     /*_cells[mid + _direction_offsets[EAST]].fill = true;*/
     _cell_fills[mid + _direction_offsets[WEST]] = true;
     _cell_fills[mid + _direction_offsets[SOUTH]] = true;
-    /*_cells[mid + _direction_offsets[NORTH_EAST]] = true;*/
-    /*_cells[mid + _direction_offsets[NORTH_WEST]] = true;*/
+    /*_cell_fills[mid + _direction_offsets[NORTH_EAST]] = true;*/
+    /*_cell_fills[mid + _direction_offsets[NORTH_WEST]] = true;*/
     _cell_fills[mid + _direction_offsets[SOUTH_EAST]] = true;
     /*_cells[mid + _direction_offsets[SOUTH_WEST]] = true;*/
 }

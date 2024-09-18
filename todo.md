@@ -1,14 +1,15 @@
 # things to implement:
-- make sure cells don't wrap around -- maybe not?
 - array bounds checking
-- gol rules
 - cell seeds
-- Cells
+- make sure cells don't wrap around -- maybe not?
+- mouse input -- maybe not if seeds exist
 
 - Save button in imgui that saves current values to a file that gets read at init
     chose which values get saved in code
 
 # Done:
+- gol rules -- done
+- Cells -- done
 - cell directions -- done
 - Grid -- done
 - Automatically resizing grid -- done
