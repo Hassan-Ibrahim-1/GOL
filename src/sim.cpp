@@ -18,7 +18,7 @@ void Sim::init() {
 
 void Sim::run() {
     create_imgui_windows();
-    if (_start_time + _time_offset < glfwGetTime()) {
+    if (_start && _start_time + _time_offset < glfwGetTime()) {
         update(); // renders cells
         _start_time = glfwGetTime();
     }
@@ -42,6 +42,9 @@ void Sim::create_imgui_windows() {
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
     ImGui::DragInt("num cells", (int*)&_ncells, 1, 1, 10000);
     ImGui::DragFloat("time offset", &_time_offset, 0.01f, 0.1f, 100.0f);
+    if (!_start && ImGui::Button("start")) {
+        _start = true;
+    }
 
     ImGui::Text("mouse_pos (%.3f, %.3f)", Globals::mouse_pos.x, Globals::mouse_pos.y);
 
@@ -103,6 +106,7 @@ void Sim::create_grid() {
         cell_t.position.x = original_xpos;
         cell_t.position.y -= cell_t.scale.y;
     }
+    _cell_fills.resize(_cells.size());
 }
 
 void Sim::update() {
@@ -113,16 +117,16 @@ void Sim::update() {
             printf("neighbours = %u\n", n_neighbours);
         }
         if (n_neighbours < 2) {
-            cell.fill = false;
+            _cell_fills[i] = false;
         }
         else if (n_neighbours == 3 || n_neighbours == 2) {
             if (!cell.fill){
-                cell.fill = n_neighbours != 3;
+                _cell_fills[i] = n_neighbours == 3;
             }
         }
         else if (n_neighbours > 3) {
             if (cell.fill) {
-                cell.fill = false;
+                _cell_fills[i] = false;
             }
         }
         /*if (n_neighbours > 3) {*/
@@ -140,12 +144,14 @@ void Sim::update() {
         /*else if (n_neighbours < 2) {*/
         /*    cell.fill = false;*/
         /*}*/
-        cell.rect.color = _rect.color;
-        cell.render();
+        /*cell.rect.color = _rect.color;*/
+        /*cell.render();*/
     }
 }
 void Sim::render_cells() {
-    for (Cell& cell : _cells) {
+    for (size_t i = 0; i < _cells.size(); i++) {
+        Cell& cell = _cells[i];
+        cell.fill = _cell_fills[i];
         cell.rect.color = _rect.color;
         cell.render();
     }
@@ -168,15 +174,15 @@ void Sim::update_direction_offsets(uint n_cols, uint n_rows) {
 void Sim::spawn_initial_cells() {
     uint mid = _cells.size() / 2;
     mid += 20;
-    _cells[mid].fill = true;
-    _cells[mid + _direction_offsets[NORTH]].fill = true;
+    _cell_fills[mid] = true;
+    _cell_fills[mid + _direction_offsets[NORTH]] = true;
     /*_cells[mid + _direction_offsets[EAST]].fill = true;*/
-    _cells[mid + _direction_offsets[WEST]].fill = true;
-    _cells[mid + _direction_offsets[SOUTH]].fill = true;
-    /*_cells[mid + _direction_offsets[NORTH_EAST]].fill = true;*/
-    /*_cells[mid + _direction_offsets[NORTH_WEST]].fill = true;*/
-    _cells[mid + _direction_offsets[SOUTH_EAST]].fill = true;
-    /*_cells[mid + _direction_offsets[SOUTH_WEST]].fill = true;*/
+    _cell_fills[mid + _direction_offsets[WEST]] = true;
+    _cell_fills[mid + _direction_offsets[SOUTH]] = true;
+    /*_cells[mid + _direction_offsets[NORTH_EAST]] = true;*/
+    /*_cells[mid + _direction_offsets[NORTH_WEST]] = true;*/
+    _cell_fills[mid + _direction_offsets[SOUTH_EAST]] = true;
+    /*_cells[mid + _direction_offsets[SOUTH_WEST]] = true;*/
 }
 
 uint Sim::cell_neighbours(uint cell_index) {

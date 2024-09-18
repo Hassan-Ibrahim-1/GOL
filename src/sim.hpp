@@ -23,9 +23,12 @@ inline Renderer* _renderer;
 
 inline uint _ncells = 1980;
 inline std::vector<Cell> _cells;
+inline std::vector<bool> _cell_fills;
 inline std::array<int, 8> _direction_offsets;
 inline double _start_time = 0.0;
 inline float _time_offset = 0.4f;
+
+inline bool _start = false;
 
 void init();
 void run();
