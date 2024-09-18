@@ -11,7 +11,6 @@
 #include "error_handler.hpp"
 #include "input_handler.hpp"
 #include "renderer.hpp"
-#include "settings.hpp"
 #include "sim.hpp"
 #include "utils.hpp"
 #include "window.hpp"
@@ -23,6 +22,8 @@
 static void cleanup();
 
 int main() {
+    Utils::init();
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -79,6 +80,7 @@ int main() {
     bool rect_fill = true;
     ImVec4 position(0.0f, 0.0f, 0.0f, 0.0f);
     ImVec4 scale(1.0f, 1.0f, 1.0f, 0.0f);
+
 
     while (!glfwWindowShouldClose(window.get_window())) {
         float current_frame = glfwGetTime();

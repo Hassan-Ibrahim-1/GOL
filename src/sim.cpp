@@ -5,6 +5,7 @@
 #include "sim.hpp"
 #include "globals.hpp"
 #include "imgui.h"
+#include "utils.hpp"
 
 void Sim::init() {
     Transform transform(glm::vec3(-0.28f, 0.0f, 0.0f), Rotation(), glm::vec3(1.39f, 1.89f, 1.0f));
@@ -76,7 +77,10 @@ void Sim::create_grid() {
         n_cols = f1 - 1;
     }
 
-    update_direction_offsets(n_cols, n_rows);
+    _cols = n_cols;
+    _rows = n_rows;
+
+    update_direction_offsets();
 
     Transform cell_t = Transform();
     cell_t.scale.x = _rect.transform.scale.x / n_cols;
@@ -157,26 +161,38 @@ void Sim::init_direction_offsets() {
     _direction_offsets[WEST] = -1;
 }
 
-void Sim::update_direction_offsets(uint n_cols, uint n_rows) {
-    _direction_offsets[NORTH] = -n_cols;
-    _direction_offsets[SOUTH] = n_cols;
-    _direction_offsets[NORTH_EAST] = -n_cols + 1;
-    _direction_offsets[NORTH_WEST] = -n_cols - 1;
-    _direction_offsets[SOUTH_EAST] = n_cols + 1;
-    _direction_offsets[SOUTH_WEST] = n_cols - 1;
+void Sim::update_direction_offsets() {
+    _direction_offsets[NORTH] = -_cols;
+    _direction_offsets[SOUTH] = _cols;
+    _direction_offsets[NORTH_EAST] = -_cols + 1;
+    _direction_offsets[NORTH_WEST] = -_cols - 1;
+    _direction_offsets[SOUTH_EAST] = _cols + 1;
+    _direction_offsets[SOUTH_WEST] = _cols - 1;
 }
 
 void Sim::spawn_initial_cells() {
-    uint mid = _cells.size() / 2;
-    mid += 20;
-    _cell_fills[mid] = true;
-    _cell_fills[mid + _direction_offsets[NORTH]] = true;
+    float sc = abs(sin(_seed));
+    for (int cols = 0; cols < _cols; cols++) {
+        uint n_cells = cols * sc * Utils::random_float(0, _rows-1);
+        uint index = cols;
+        printf("n_cells: %u\nindex: %u\nsc: %f\n", n_cells, index, sc);
+        while (index != -1 && n_cells > 0) {
+            printf("filling cell with index %u\n", index);
+            _cell_fills[index] = true;
+            index = cell_south(index);
+            n_cells--;
+        }
+    }
+    /*uint mid = _cells.size() / 2;*/
+    /*mid += 20;*/
+    /*_cell_fills[mid] = true;*/
+    /*_cell_fills[mid + _direction_offsets[NORTH]] = true;*/
     /*_cells[mid + _direction_offsets[EAST]].fill = true;*/
-    _cell_fills[mid + _direction_offsets[WEST]] = true;
-    _cell_fills[mid + _direction_offsets[SOUTH]] = true;
+    /*_cell_fills[mid + _direction_offsets[WEST]] = true;*/
+    /*_cell_fills[mid + _direction_offsets[SOUTH]] = true;*/
     /*_cell_fills[mid + _direction_offsets[NORTH_EAST]] = true;*/
     /*_cell_fills[mid + _direction_offsets[NORTH_WEST]] = true;*/
-    _cell_fills[mid + _direction_offsets[SOUTH_EAST]] = true;
+    /*_cell_fills[mid + _direction_offsets[SOUTH_EAST]] = true;*/
     /*_cells[mid + _direction_offsets[SOUTH_WEST]] = true;*/
 }
 

@@ -27,6 +27,10 @@ inline std::vector<bool> _cell_fills;
 inline std::array<int, 8> _direction_offsets;
 inline double _start_time = 0.0;
 inline float _time_offset = 0.4f;
+inline uint _cols = 0;
+inline uint _rows = 0;
+
+inline uint _seed = 2000;
 
 inline bool _start = false;
 
@@ -40,7 +44,7 @@ void create_imgui_windows();
 void update();
 void render_cells();
 void init_direction_offsets();
-void update_direction_offsets(uint n_cols, uint n_rows);
+void update_direction_offsets();
 void spawn_initial_cells();
 
 uint cell_neighbours(uint cell_index);
