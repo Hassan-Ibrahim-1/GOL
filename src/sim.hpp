@@ -21,9 +21,10 @@ enum Direction {
 inline Rect _rect;
 inline Renderer* _renderer;
 
-inline uint _ncells = 1435;
+inline uint _ncells = 1980;
 inline std::vector<Cell> _cells;
 inline std::array<int, 8> _direction_offsets;
+inline double start_time = 0.0;
 
 void init();
 void run();
@@ -38,5 +39,16 @@ void init_direction_offsets();
 void update_direction_offsets(uint n_cols, uint n_rows);
 void spawn_initial_cells();
 
+uint cell_neighbours(uint cell_index);
+
+// return -1 if no cell exists
+int cell_north(uint cell_index);
+int cell_south(uint cell_index);
+int cell_east(uint cell_index);
+int cell_west(uint cell_index);
+int cell_north_east(uint cell_index);
+int cell_north_west(uint cell_index);
+int cell_south_east(uint cell_index);
+int cell_south_west(uint cell_index);
 }
 

@@ -1,3 +1,5 @@
+#include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
 
 #include "sim.hpp"
@@ -11,12 +13,19 @@ void Sim::init() {
     init_direction_offsets();
     create_grid();
     spawn_initial_cells();
+    start_time = glfwGetTime();
 }
 
 void Sim::run() {
     create_imgui_windows();
-    update();
-    render_cells();
+    if (start_time + 0.1f < glfwGetTime()) {
+        update(); // renders cells
+        start_time = glfwGetTime();
+    }
+    else {
+        render_cells();
+    }
+    /*render_cells();*/
     _renderer->draw_rect(_rect, DrawMode::LINE);
 }
 
@@ -96,9 +105,25 @@ void Sim::create_grid() {
 }
 
 void Sim::update() {
-    
+    for (size_t i = 0; i < _cells.size(); i++) {
+        Cell& cell = _cells[i];
+        uint n_neighbours = cell_neighbours(i);
+        if (n_neighbours > 3) {
+            cell.fill = false;
+        }
+        else if (n_neighbours == 3) {
+            cell.fill = true;
+        }
+        else if (n_neighbours < 2) {
+            cell.fill = false;
+        }
+        else {
+            cell.fill = true;
+        }
+        cell.rect.color = _rect.color;
+        cell.render();
+    }
 }
-
 void Sim::render_cells() {
     for (Cell& cell : _cells) {
         cell.rect.color = _rect.color;
@@ -122,15 +147,118 @@ void Sim::update_direction_offsets(uint n_cols, uint n_rows) {
 
 void Sim::spawn_initial_cells() {
     uint mid = _cells.size() / 2;
-    mid += 10;
+    mid += 20;
     _cells[mid].fill = true;
-    /*_cells[mid + _direction_offsets[NORTH]].fill = true;*/
+    _cells[mid + _direction_offsets[NORTH]].fill = true;
     /*_cells[mid + _direction_offsets[EAST]].fill = true;*/
-    /*_cells[mid + _direction_offsets[WEST]].fill = true;*/
-    /*_cells[mid + _direction_offsets[SOUTH]].fill = true;*/
-    _cells[mid + _direction_offsets[NORTH_EAST]].fill = true;
-    _cells[mid + _direction_offsets[NORTH_WEST]].fill = true;
+    _cells[mid + _direction_offsets[WEST]].fill = true;
+    _cells[mid + _direction_offsets[SOUTH]].fill = true;
+    /*_cells[mid + _direction_offsets[NORTH_EAST]].fill = true;*/
+    /*_cells[mid + _direction_offsets[NORTH_WEST]].fill = true;*/
     _cells[mid + _direction_offsets[SOUTH_EAST]].fill = true;
-    _cells[mid + _direction_offsets[SOUTH_WEST]].fill = true;
+    /*_cells[mid + _direction_offsets[SOUTH_WEST]].fill = true;*/
 }
 
+uint Sim::cell_neighbours(uint cell_index) {
+    uint count = 0;
+    if (cell_north(cell_index) != -1) {
+        if (_cells[cell_north(cell_index)].fill) {
+            count++;
+        }
+    }
+    if (cell_south(cell_index) != -1) {
+        if (_cells[cell_south(cell_index)].fill) {
+            count++;
+        }
+    }
+    if (cell_east(cell_index) != -1) {
+        if (_cells[cell_east(cell_index)].fill) {
+            count++;
+        }
+    }
+    if (cell_west(cell_index) != -1) {
+        if (_cells[cell_west(cell_index)].fill) {
+            count++;
+        }
+    }
+    if (cell_north_east(cell_index) != -1) {
+        if (_cells[cell_north_east(cell_index)].fill) {
+            count++;
+        }
+    }
+    if (cell_north_west(cell_index) != -1) {
+        if (_cells[cell_north_west(cell_index)].fill) {
+            count++;
+        }
+    }
+    if (cell_south_east(cell_index) != -1) {
+        if (_cells[cell_south_east(cell_index)].fill) {
+            count++;
+        }
+    }
+    if (cell_south_west(cell_index) != -1) {
+        if (_cells[cell_south_west(cell_index)].fill) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+int Sim::cell_north(uint cell_index) {
+    uint index = cell_index + _direction_offsets[NORTH];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
+int Sim::cell_south(uint cell_index) {
+    uint index = cell_index + _direction_offsets[SOUTH];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
+int Sim::cell_east(uint cell_index) {
+    uint index = cell_index + _direction_offsets[EAST];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
+int Sim::cell_west(uint cell_index) {
+    uint index = cell_index + _direction_offsets[WEST];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
+
+int Sim::cell_north_east(uint cell_index) {
+    uint index = cell_index + _direction_offsets[NORTH_EAST];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
+int Sim::cell_north_west(uint cell_index) {
+    uint index = cell_index + _direction_offsets[NORTH_WEST];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
+int Sim::cell_south_east(uint cell_index) {
+    uint index = cell_index + _direction_offsets[SOUTH_EAST];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
+int Sim::cell_south_west(uint cell_index) {
+    uint index = cell_index + _direction_offsets[SOUTH_WEST];
+    if (index < 0 || index >= _cells.size()) {
+        return -1;
+    }
+    return index;
+}
