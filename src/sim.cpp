@@ -20,6 +20,11 @@ void Sim::init() {
 void Sim::run() {
     create_imgui_windows();
     render_cells();
+    if (_start_time + _time_offset < glfwGetTime()) {
+        _seed++;
+        reset();
+        spawn_initial_cells();
+    }
     if (_update_cells && _start_time + _time_offset < glfwGetTime()) {
         update(); // renders cells
         _start_time = glfwGetTime();
@@ -47,6 +52,7 @@ void Sim::create_imgui_windows() {
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
     ImGui::DragInt("num cells", (int*)&_ncells, 1, 1, 10000);
     ImGui::DragFloat("time offset", &_time_offset, 0.01f, 0.0f, 100.0f);
+    ImGui::DragInt("seed", (int*)&_seed, 1, 0);
     if (!_update_cells && ImGui::Button("start")) {
         _update_cells = true;
     }
@@ -54,10 +60,11 @@ void Sim::create_imgui_windows() {
         if (ImGui::Button("pause")) {
             _update_cells = false;
         }
-        if (ImGui::Button("reset")) {
-            _update_cells = false;
-            reset();
-        }
+    }
+
+    if (ImGui::Button("reset")) {
+        _update_cells = false;
+        reset();
     }
 
     ImGui::Text("mouse_pos (%.3f, %.3f)", Globals::mouse_pos.x, Globals::mouse_pos.y);
@@ -188,14 +195,14 @@ void Sim::update_direction_offsets() {
 void Sim::spawn_initial_cells() {
     float sc = abs(sin(_seed));
     for (int cols = 0; cols < _cols; cols++) {
-        uint n_cells = cols * sc * Utils::random_float(0, _rows-1);
         uint index = cols;
-        printf("n_cells: %u\nindex: %u\nsc: %f\n", n_cells, index, sc);
-        while (index != -1 && n_cells > 0) {
-            printf("filling cell with index %u\n", index);
-            _cell_fills[index] = true;
+        // uint n_cells = sc * (index += );
+        /*printf("n_cells: %u\nindex: %u\nsc: %f\n", n_cells, index, sc);*/
+        while (index != -1) {
+            /*printf("filling cell with index %u\n", index);*/
+            _cell_fills[index] = sin(index + cols * 7193) * sc > cos(tan(cols - index));
             index = cell_south(index);
-            n_cells--;
+            /*n_cells--;*/
         }
     }
     /*uint mid = _cells.size() / 2;*/
