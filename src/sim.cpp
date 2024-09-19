@@ -6,7 +6,6 @@
 #include "sim.hpp"
 #include "globals.hpp"
 #include "imgui.h"
-#include "utils.hpp"
 
 void Sim::init() {
     Transform transform(glm::vec3(-0.28f, 0.0f, 0.0f), Rotation(), glm::vec3(1.39f, 1.89f, 1.0f));
@@ -210,7 +209,7 @@ void Sim::spawn_initial_cells() {
         while (index != -1) {
             /*printf("filling cell with index %u\n", index);*/
             /*_cell_fills[index] = sin(index + col + _rows * 7819) * sc > (sin(sin(_rows)));*/
-            _cell_fills[index] = noise(sc * index / col, index) < noise(index, sc) + noise(sc, cos(sc));
+            _cell_fills[index] = noise(sc * index / col, index) < noise(index, sc) + noise(sc, cos(sc)) - atan(sc) * sc;
             index = cell_south(index);
             /*n_cells--;*/
         }
