@@ -19,16 +19,24 @@ void Sim::init() {
 }
 
 void Sim::run() {
+    static uint _prev_seed = _seed;
+
     create_imgui_windows();
     render_cells();
-    if (_start_time + _time_offset < glfwGetTime()) {
-        _seed++;
-        reset();
-        spawn_initial_cells();
-    }
+
+    /*if (_start_time + _time_offset < glfwGetTime()) {*/
+    /*    _seed++;*/
+    /*    reset();*/
+    /*}*/
     if (_update_cells && _start_time + _time_offset < glfwGetTime()) {
         update(); // renders cells
         _start_time = glfwGetTime();
+    }
+    else if (!_update_cells) {
+        if (_prev_seed != _seed) {
+            _prev_seed = _seed;
+            reset();
+        }
     }
     /*render_cells();*/
     _renderer->draw_rect(_rect, DrawMode::LINE);

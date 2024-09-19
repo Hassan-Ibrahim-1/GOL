@@ -30,7 +30,7 @@ inline float _time_offset = 0.1f;
 inline uint _cols = 0;
 inline uint _rows = 0;
 
-inline uint _seed = 2000;
+inline int _seed = 2000;
 
 inline bool _update_cells = false;
 
