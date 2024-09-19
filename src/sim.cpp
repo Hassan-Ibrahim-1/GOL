@@ -202,7 +202,7 @@ void Sim::spawn_initial_cells() {
         while (index != -1) {
             /*printf("filling cell with index %u\n", index);*/
             /*_cell_fills[index] = sin(index + col + _rows * 7819) * sc > (sin(sin(_rows)));*/
-            _cell_fills[index] = exp(cos(sc + col)) * sc < sin(index * sc);
+            _cell_fills[index] = noise(sc * index / col, index) < noise(index, sc) + noise(sc, cos(sc));
             index = cell_south(index);
             /*n_cells--;*/
         }
@@ -218,6 +218,13 @@ void Sim::spawn_initial_cells() {
     /*_cell_fills[mid + _direction_offsets[NORTH_WEST]] = true;*/
     /*_cell_fills[mid + _direction_offsets[SOUTH_EAST]] = true;*/
     /*_cells[mid + _direction_offsets[SOUTH_WEST]] = true;*/
+}
+
+float Sim::noise(int x, int y) {
+    int n = x + y * 57;
+    n = (n<<13) ^ n;
+    return ( 1.0 - ( (n * (n * n * 15731 + 789221) + 1376312589)
+    & 0x7fffffff) / 1073741824.0); 
 }
 
 uint Sim::cell_neighbours(uint cell_index) {

@@ -48,6 +48,7 @@ void init_direction_offsets();
 void update_direction_offsets();
 void spawn_initial_cells();
 
+float noise(int x, int y);
 uint cell_neighbours(uint cell_index);
 
 // return -1 if no cell exists
