@@ -200,7 +200,7 @@ void Sim::spawn_initial_cells() {
         /*printf("n_cells: %u\nindex: %u\nsc: %f\n", n_cells, index, sc);*/
         while (index != -1) {
             /*printf("filling cell with index %u\n", index);*/
-            _cell_fills[index] = sin(index + cols * 7193) * sc > cos(tan(cols - index));
+            _cell_fills[index] = sin(index + cols * 7193) * sc > (tan(_rows));
             index = cell_south(index);
             /*n_cells--;*/
         }
