@@ -17,6 +17,8 @@ ImGuiIO& create_imgui_context();
 
 float random_float(float min, float max);
 
+float noise(int x, int y);
+
 // TODO:
 void add_to_imgui(Transform& transform);
 

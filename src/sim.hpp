@@ -30,7 +30,7 @@ inline float _time_offset = 0.1f;
 inline uint _cols = 0;
 inline uint _rows = 0;
 
-inline int _seed = 2000;
+inline int _seed = 7184;
 
 inline bool _update_cells = false;
 
@@ -48,7 +48,6 @@ void init_direction_offsets();
 void update_direction_offsets();
 void spawn_initial_cells();
 
-float noise(int x, int y);
 uint cell_neighbours(uint cell_index);
 
 // return -1 if no cell exists

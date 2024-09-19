@@ -6,6 +6,7 @@
 #include "sim.hpp"
 #include "globals.hpp"
 #include "imgui.h"
+#include "utils.hpp"
 
 void Sim::init() {
     Transform transform(glm::vec3(-0.28f, 0.0f, 0.0f), Rotation(), glm::vec3(1.39f, 1.89f, 1.0f));
@@ -14,6 +15,7 @@ void Sim::init() {
     init_direction_offsets();
     create_grid();
     spawn_initial_cells();
+    /*_seed = (int) Utils::random_float(0, 1000000);*/
     _start_time = glfwGetTime();
 }
 
@@ -55,7 +57,7 @@ void Sim::create_imgui_windows() {
     ImGui::Begin("sim bg");
     ImGui::SetWindowSize("window", ImVec2(400, 250));
 
-    ImGui::ColorEdit4("rect color", (float*)&_rect.color);
+    ImGui::ColorEdit3("rect color", (float*)&_rect.color);
     ImGui::DragFloat2("rect position", (float*)&_rect.transform.position, 0.01f, -1.0f, 1.0f);
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
     ImGui::DragInt("num cells", (int*)&_ncells, 1, 1, 10000);
@@ -209,7 +211,10 @@ void Sim::spawn_initial_cells() {
         while (index != -1) {
             /*printf("filling cell with index %u\n", index);*/
             /*_cell_fills[index] = sin(index + col + _rows * 7819) * sc > (sin(sin(_rows)));*/
-            _cell_fills[index] = noise(sc * index / col, index) < noise(index, sc) + noise(sc, cos(sc)) - atan(sc) * sc;
+            // fewer cells
+            /*_cell_fills[index] = noise(sc * index / col, index) < noise(index, sc) + noise(sc, cos(sc)) - atan(sc) * sc;*/
+            // more cells
+            _cell_fills[index] = Utils::noise(sc * index / col, index) < Utils::noise(index, sc) + Utils::noise(sc, cos(sc));
             index = cell_south(index);
             /*n_cells--;*/
         }
@@ -225,13 +230,6 @@ void Sim::spawn_initial_cells() {
     /*_cell_fills[mid + _direction_offsets[NORTH_WEST]] = true;*/
     /*_cell_fills[mid + _direction_offsets[SOUTH_EAST]] = true;*/
     /*_cells[mid + _direction_offsets[SOUTH_WEST]] = true;*/
-}
-
-float Sim::noise(int x, int y) {
-    int n = x + y * 57;
-    n = (n<<13) ^ n;
-    return ( 1.0 - ( (n * (n * n * 15731 + 789221) + 1376312589)
-    & 0x7fffffff) / 1073741824.0); 
 }
 
 uint Sim::cell_neighbours(uint cell_index) {
