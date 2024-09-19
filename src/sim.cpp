@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 
+#include <cmath>
 #include <glm/glm.hpp>
 
 #include "sim.hpp"
@@ -194,13 +195,14 @@ void Sim::update_direction_offsets() {
 
 void Sim::spawn_initial_cells() {
     float sc = abs(sin(_seed));
-    for (int cols = 0; cols < _cols; cols++) {
-        uint index = cols;
+    for (int col = 0; col < _cols; col++) {
+        uint index = col;
         // uint n_cells = sc * (index += );
         /*printf("n_cells: %u\nindex: %u\nsc: %f\n", n_cells, index, sc);*/
         while (index != -1) {
             /*printf("filling cell with index %u\n", index);*/
-            _cell_fills[index] = sin(index + cols * 7193) * sc > (tan(_rows));
+            /*_cell_fills[index] = sin(index + col + _rows * 7819) * sc > (sin(sin(_rows)));*/
+            _cell_fills[index] = exp(cos(sc + col)) * sc < sin(index * sc);
             index = cell_south(index);
             /*n_cells--;*/
         }
