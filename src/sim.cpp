@@ -20,7 +20,7 @@ void Sim::init() {
 void Sim::run() {
     create_imgui_windows();
     render_cells();
-    if (_start && _start_time + _time_offset < glfwGetTime()) {
+    if (_update_cells && _start_time + _time_offset < glfwGetTime()) {
         update(); // renders cells
         _start_time = glfwGetTime();
     }
@@ -32,6 +32,12 @@ void Sim::end() {
 
 }
 
+void Sim::reset() {
+    _cells.clear();
+    _cell_fills.clear();
+    init();
+}
+
 void Sim::create_imgui_windows() {
     ImGui::Begin("sim bg");
     ImGui::SetWindowSize("window", ImVec2(400, 250));
@@ -40,9 +46,18 @@ void Sim::create_imgui_windows() {
     ImGui::DragFloat2("rect position", (float*)&_rect.transform.position, 0.01f, -1.0f, 1.0f);
     ImGui::DragFloat2("rect scale", (float*)&_rect.transform.scale, 0.01f, -2.0f, 2.0f);
     ImGui::DragInt("num cells", (int*)&_ncells, 1, 1, 10000);
-    ImGui::DragFloat("time offset", &_time_offset, 0.01f, 0.1f, 100.0f);
-    if (!_start && ImGui::Button("start")) {
-        _start = true;
+    ImGui::DragFloat("time offset", &_time_offset, 0.01f, 0.0f, 100.0f);
+    if (!_update_cells && ImGui::Button("start")) {
+        _update_cells = true;
+    }
+    if (_update_cells) {
+        if (ImGui::Button("pause")) {
+            _update_cells = false;
+        }
+        if (ImGui::Button("reset")) {
+            _update_cells = false;
+            reset();
+        }
     }
 
     ImGui::Text("mouse_pos (%.3f, %.3f)", Globals::mouse_pos.x, Globals::mouse_pos.y);

@@ -26,18 +26,19 @@ inline std::vector<Cell> _cells;
 inline std::vector<bool> _cell_fills;
 inline std::array<int, 8> _direction_offsets;
 inline double _start_time = 0.0;
-inline float _time_offset = 0.4f;
+inline float _time_offset = 0.1f;
 inline uint _cols = 0;
 inline uint _rows = 0;
 
 inline uint _seed = 2000;
 
-inline bool _start = false;
+inline bool _update_cells = false;
 
 void init();
 void run();
 void end();
 
+void reset();
 
 void create_grid();
 void create_imgui_windows();
